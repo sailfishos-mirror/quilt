@@ -5,7 +5,6 @@
 #  published by the Free Software Foundation.
 #
 #  See the COPYING and AUTHORS files for more details.
-
 # Read in library functions
 if [ "$(type -t patch_file_name)" != function ]
 then
@@ -63,9 +62,26 @@ files_may_have_changed()
 	then
 		return 1
 	fi
-	
-	local apply_ts=$(date -r $pc_file '+%s') ts
 
+	if [ -z $patch_file ]
+	then
+		echo "Waring: Can not find the $patch in your series file, the series file may changed"
+		return 0 #can not find the patch in series
+	fi
+	local apply_ts=$(date -r $pc_file '+%s') ts
+	
+	for file in $(files_in_patch $patch)
+	do
+		if ! [ -e .pc/$patch/$file ]
+		then
+			echo "Warning: the backup files .pc/$patch/$file do not exist"
+			echo "Check your backup files in .pc/$patch"
+			echo "If pop did not success, please touch a empty .pc/$patch/$file and try again"
+			touch .pc/$patch/$file
+			return 1 # backup files is missing, we can not remove it with force
+		fi
+	done
+	
 	if [ -e "$patch_file" -a $pc_file -ot "$patch_file" ]
 	then
 		return 0
@@ -77,7 +93,6 @@ files_may_have_changed()
 		then
 			return 0  # file is missing
 		fi
-		
 		ts=$(date -r $file '+%s')
 		if [ $? -ne 0 -o $ts -gt $apply_ts ]
 		then
@@ -133,7 +148,6 @@ reverse_patch()
 rpatch()
 {
 	local patch=$1 pc_file=$(pc_file_name $patch)
-
 	if ! [ -e $pc_file ]
 	then
 		echo $"Patch $patch appears to be empty, removed"
@@ -143,8 +157,12 @@ rpatch()
 
 	echo $"Removing $patch"
 	trap "" SIGINT
-	if [ -n "$opt_force" ] || \
-	   ( [ -z "$opt_remove" ] && ! files_may_have_changed $patch )
+	
+	files_may_have_changed $patch
+	patch_may_changed=$?
+	
+	if [ "$opt_force" -eq 1 ] || \
+	   ( [ "$opt_remove" -eq 0 ] && [ $patch_may_changed -eq 0 ] )
 	then
 		# Optimize: Force remove if the patch has not been
 		# modified since it was applied. (Forced remove is
@@ -196,7 +214,8 @@ if [ $? -ne 0 ]
 then
 	usage
 fi
-
+opt_force=0
+opt_remove=0
 eval set -- "$options"
 
 while true
