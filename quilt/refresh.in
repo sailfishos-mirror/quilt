@@ -120,7 +120,7 @@ save_patches ()
 		cp -a .pc/$patch .pc/$saved_patch
 		current_dir=$(pwd)
 		cd .pc/$saved_patch
-		@PATCH@	-p1 -s -i "${current_dir}/${patch_file}" 
+		@PATCH@	-p1 -s -f -i "${current_dir}/${patch_file}" > /dev/null 
 		cd $current_dir 
 	fi
 }
