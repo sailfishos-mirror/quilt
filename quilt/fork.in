@@ -19,11 +19,14 @@ fi
 
 usage()
 {
-	echo $"Usage: quilt fork {new_patchname}"
+	echo $"Usage: quilt fork [new_name]"
 	if [ x$1 = x-h ]
 	then
 		echo $"
- Fork the next patch in the series
+Fork the next patch. If new_name is missing, the name of the
+forked patch will be the current patch name, followed by \"-2\".
+If the patch name already ends in a dash-and-number, the number is
+further incremented (e.g., patch.diff, patch-2.diff).
 "
 		exit 0
 	else
@@ -51,47 +54,55 @@ do
 	esac
 done
 
-if [ $# -ne 1 ]
+if [ $# -gt 1 ]
 then
 	usage
 fi
 
-patch_file=$(echo $1 | @SED@ -e 's/^'"$(quote_bre $P)"'patches\///')
+next="$(patches_after $(top_patch) | head -n 1)"
+if [ -z "$next" ]
+then
+	echo $"All patches applied" >&2
+	exit 1
+fi
+next_file_name="$(patch_file_name $next)"
+
+if [ $# -eq 1 ]
+then
+	patch_file="$1"
+else
+	set -- $(echo "$next" \
+		 | @SED@ -e 's: :\ :g' -e 's:-\([0-9]\+\)$: \1:')
+	if [ $# -eq 1 ]; then
+		patch_file="$1-2"
+	else
+		patch_file="$1-$[$2+1]"
+	fi
+	ext="$(echo $next_file_name \
+	       | @SED@ -e '\:\.\(diff\?\|patch\)\(\.gz\|\.bz2\|\)$:!d' \
+		       -e 's:.*\(\.\(diff\?\|patch\)\(\.gz\|\.bz2\|\)\)$:\1:')"
+	patch_file="$patch_file$ext"
+fi
+
+patch_file=$(echo $patch_file | @SED@ -e 's/^'"$(quote_bre $QUILT_PATCHES)"'\///')
 patch=$(stripit $patch_file)
 
-if patch_in_series $patch
+if patch_in_series $patch || \
+   [ -e "patches/$patch_file" ]
 then
-	echo $"Patch $patch exists already, please change a new_name"
+	echo $"Patch $patch exists already, please choose a new name"
 	exit 1
 fi
 
-mkdir -p $(dirname $(pc_file_name $patch))
-rm -f $(pc_file_name $patch)
-
-next_patch=$(patches_after $(top_patch) | head -n 1)
-#copy the original patch to the cloned patch
-
-next_patch_file=$(patch_file_name $next_patch)
-next_pc=$(pc_file_name $next_patch)
-
-cp -f ${next_patch_file} patches/${patch_file}.patch
-
-#remove the original patch
-if [ -z next_patch ]  
+if ! rename_in_series "$next" "$patch_file" || \
+   ! cp -p "$next_file_name" "$(patch_file_name $patch)"
 then
-	echo $"patch ended at $(top_patch)"
-	exit 1
-else
-	remove_from_series $next_patch
-fi
-
-#add the cloned patch to series
-if ! insert_in_series ${patch_file}.patch 
-then
-	echo $"Failed to fork patch $patch"
+	echo $"Fork of $next_file_name to $patch_file failed" >&2
 	exit 1
 fi
-echo $"cloned $next_patch to $patch_file"
+
+echo $"Fork of $next_file_name created as $(patch_file_name $patch)"
+
 ### Local Variables:
 ### mode: shell-script
 ### End:

@@ -101,15 +101,14 @@ save_patches ()
 	local patch=$1
 	local saved_patch=$(save_patch_name $patch)
 	local patch_file=$(patch_file_name $patch)
-	local saved_pc_file=$(pc_file_name $saved_patch)	
-
+	
 	#if we add a file to a new create patch, the patch_file are not exist
 
 	if ! [ -e "${patch_file}" ]; then
 		return	
 	fi
 
-	if  [ -e $saved_pc_file ]; then
+	if  [ -e "$saved_patch" ]; then
 		if [ $opt_Keep -eq 0 -a $opt_Overwrite -eq 0 ]; then
 			while :; do
 				readln "$patch save exist Overwrite/Keep:" "O"
@@ -270,7 +269,9 @@ then
 	die 1
 fi
 
-rm -f $(pc_file_name $patch)~refresh
+touch .pc/$patch
+
+rm -f .pc/$patch~refresh
 echo $"Refreshed patch $patch"
 if ! change_db_strip_level -p$opt_strip_level $patch
 then

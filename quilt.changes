@@ -1,4 +1,42 @@
 -------------------------------------------------------------------
+Fri Oct 31 16:59:06 CET 2003 - agruen@suse.de
+
+- Bump version number to 0.28 (cvs tag VER_0_28).
+
+-------------------------------------------------------------------
+Fri Oct 31 15:55:29 CET 2003 - agruen@suse.de
+
+- No longer verify if patches remove cleanly by reverse applying
+  them: This doesn't always succeed, and the  the equivalent of
+  `quilt diff -z' should suffice, anyway.
+- Add `touch .pc/$patch' after successful refresh: Speeds up
+  `quilt pop' after a refresh.
+- Update test suite.
+- apatch was printing a spurious newline.
+
+-------------------------------------------------------------------
+Wed Oct 29 17:19:24 CET 2003 - agruen@suse.de
+
+- If a patch does not apply cleanly and `quilt push' removes
+  rejects files it GNU patch left behind, change the output from
+  ``saving rejects to file x.rej'' to ``rejects in file x''.
+
+-------------------------------------------------------------------
+Tue Oct 28 14:51:07 CET 2003 - agruen@suse.de
+
+- Remove .pc/*/.pc files, and adjust various scripts accordingly.
+- Run test/one.test inside sub-directory.
+- Bump version number to 0.27 (cvs tag VER_0_27).
+
+-------------------------------------------------------------------
+Tue Oct 28 14:32:13 CET 2003 - agruen@suse.de
+
+- Change name and semantics of PATCHSCRIPTS variable: Before, if
+  PATCHSCRIPTS was set, the patches were in $PATCHSCRIPTS/patches.
+  Now, if QUILT_PATCHES is set, the patches are in $QUILT_PATCHES.
+  QUILT_PATCHES defaults to "patches", like before.
+
+-------------------------------------------------------------------
 Sun Oct 26 17:53:53 CET 2003 - agruen@suse.de
 
 - Get rid of patches_per cache_in `quilt patches'. Remove
