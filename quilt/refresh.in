@@ -5,7 +5,6 @@
 #  published by the Free Software Foundation.
 #
 #  See the COPYING and AUTHORS files for more details.
-
 # Read in library functions
 if [ "$(type -t patch_file_name)" != function ]
 then
@@ -24,7 +23,7 @@ usage()
 	then
 		redirect='>&2'
 	fi
-	echo $"Usage: quilt refresh [-p n] [-f] [patch]" $redirect
+	echo $"Usage: quilt refresh [-p n] [-f] [k|o] [patch]" $redirect
 	
 	if [ x$1 = x-h ]
 	then
@@ -46,7 +45,10 @@ patch.
 	
 -f	Force refresh, even if more recent patches modify
 	some of the same files.
+-O 	Overwrite the quilt save patches (for gendiff)
+-K	Keep the quilt save patches unchanged (for gendiff)
 
+	
 "
 		exit 0
 	else
@@ -61,14 +63,75 @@ die ()
 	[ -n "$tmpfile2" ] && rm -f $tmpfile2
 	exit $status
 }
+#
+# readln reads a line into $ans.
+#
+#	readln prompt default oldval
+#
+function readln () {
+	echo -n $1
+	read ans 
+	if [ -z "$ans" ]; then
+		opt_Overwrite=1
+		return 0
+	fi
+	if [ $ans == 'O' -o $ans == 'o' ]; then
+		opt_Overwrite=1
+		return 0
+	elif [ $ans == 'K' -o $ans == 'k' ]; then
+		opt_Keep=1
+		return 0
+	fi
+	return 1
+}
+backup_files ()
+{
+	local file_list=`cat $1`
+	local base_dir=$2
+	
+	for file in $file_list; do
+		backup_file=$(basename $file)
+		backup_dir=${base_dir}$(dirname $file)
+		mkdir -p $backup_dir
+		cp .pc/$$file $backup_dir/$backup_file
+	done
+}
+save_patches ()
+{
+	local patch=$1
+	local saved_patch=$(save_patch_name $patch)
+	local patch_file=$(patch_file_name $patch)
+	local saved_pc_file=$(pc_file_name $saved_patch)	
 
-options=`getopt -o p:fh -- "$@"`
+	if  [ -e $saved_pc_file ]; then
+		if [ $opt_Keep -eq 0 -a $opt_Overwrite -eq 0 ]; then
+			while :; do
+				readln "$patch save exist Overwrite/Keep:" "O"
+				if [ $? -eq 0 ]; then	
+					break
+				fi	
+			done
+		fi
+	else
+		opt_Overwrite=1
+	fi
+	if [ $opt_Overwrite -eq 1 ]; then
+		rm -rf .pc/$saved_patch
+		cp -a .pc/$patch .pc/$saved_patch
+		current_dir=$(pwd)
+		cd .pc/$saved_patch
+		@PATCH@	-p1 -s -i "${current_dir}/${patch_file}" 
+		cd $current_dir 
+	fi
+}
+options=`getopt -o kop:fh -- "$@"`
 
 if [ $? -ne 0 ]
 then
 	usage
 fi
-
+opt_Overwrite=0
+opt_Keep=0
 eval set -- "$options"
 
 while true
@@ -79,6 +142,12 @@ do
 		shift 2 ;;
 	-f)
 		opt_force=1
+		shift ;;
+	-k)
+		opt_Keep=1
+		shift ;;
+	-o)
+		opt_Overwrite=1
 		shift ;;
 	-h)
 		usage -h ;;
@@ -123,6 +192,8 @@ then
 	echo $"Cannot refresh patches with -p$opt_strip_level, please specify -p0 or -p1 instead" >&2
 	exit 1
 fi
+
+save_patches $patch
 
 trap "die 1" SIGTERM
 
