@@ -6,7 +6,6 @@
 #
 #  See the COPYING and AUTHORS files for more details.
 # Read in library functions
-
 if [ "$(type -t patch_file_name)" != function ]
 then
 	if ! [ -r @SCRIPTS@/patchfns ]
@@ -100,13 +99,40 @@ check_for_pending_changes()
 	
 	if [ -s $remains ]
 	then
-		echo $"Patch $patch does not remove cleanly (enforce with -f)."
+		echo $"Patch $patch does not remove cleanly (enforce with -f or -R)."
 		status=1
 	fi
 	rm -f $remains
 	rm -rf $workdir
 
 	return $status
+}
+
+reverse_patch()
+{
+	local patch=$1
+	local patch_file=$(patch_file_name $patch)
+
+	if ! [ -s $patch_file ]
+	then
+		echo $"Patch file $patch_file appears to be empty"
+		return 0
+	fi
+	
+	if [ "x${patch_file:(-3)}" = "x.gz" ]
+	then
+		gzip -cd $patch_file \
+		| @PATCH@ $(patch_args $patch) --no-backup-if-mismatch \
+			-R -E $silent
+	elif [ "x${patch_file:(-4)}" = "x.bz2" ]
+	then
+		bzip2 -cd $patch_file \
+		| @PATCH@ $(patch_args $patch) --no-backup-if-mismatch \
+			-R -E $silent
+	else
+		@PATCH@ $(patch_args $patch) --no-backup-if-mismatch \
+			-R -E $silent -i $patch_file
+	fi
 }
 
 rpatch()
@@ -141,21 +167,25 @@ rpatch()
 			fi
 		done
 	fi
-
-	if [ -z "$opt_force" ] && \
-	   ( [ -n "$opt_remove" ] || files_may_have_changed $patch )
+        if [ -n "$opt_remove" ]
 	then
-		check_for_pending_changes $patch $pc_file || status=1
-	fi
-
-	if [ $status -eq 0 ]
-	then
-		echo $"Removing $patch"
-		rm -f ".pc/$patch/.timestamp"
-		@LIB@/backup-files $silent -f $pc_file -B .pc/$patch/ -r
-		status=$?
-		remove_from_db $patch
-		rm -f .pc/$patch~refresh
+		reverse_patch $patch
+	        remove_from_db $patch
+	        rm -f .pc/$patch~refresh
+	else
+		if [ -z "$opt_force" ] && ( files_may_have_changed $patch )
+		then
+			check_for_pending_changes $patch $pc_file || status=1
+		fi
+		if [ $status -eq 0 ]
+		then
+			echo $"Removing $patch"
+			rm -f ".pc/$patch/.timestamp"
+			@LIB@/backup-files $silent -f $pc_file -B .pc/$patch/ -r
+			status=$?
+			remove_from_db $patch
+			rm -f .pc/$patch~refresh
+		fi
 	fi
 	rm -f $pc_file
 	trap - SIGINT
