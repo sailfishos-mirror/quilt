@@ -76,7 +76,6 @@ patch_file_name()
 		' $SERIES
 	fi
 }
-
 # The -pN option and possibly others that should be passed to patch.
 patch_args()
 {
@@ -216,7 +215,16 @@ remove_from_series()
 	   	return 1
 	fi
 }
+save_patch_name()
+{
+	local patch=$1
+	while [ $# -gt 0 ]
+	do
+		echo "${patch}.quiltsave"
+		shift
+	done
 
+}
 pc_file_name()
 {
 	while [ $# -gt 0 ]
