@@ -5,7 +5,6 @@
 #  published by the Free Software Foundation.
 #
 #  See the COPYING and AUTHORS files for more details.
-
 # Read in library functions
 if [ "$(type -t patch_file_name)" != function ]
 then
@@ -19,7 +18,7 @@ fi
 
 usage()
 {
-	echo $"Usage: quilt setup [-d sourcedir] {seriesfile|specfile}"
+	echo $"Usage: quilt setup [-d sourcedir] [-l seriesfile]  {seriesfile|specfile}"
 	if [ x$1 = x-h ]
 	then
 		echo $"
@@ -27,7 +26,8 @@ usage()
 Initializes a source tree from a patch series file.  The patch series
 file must contain the name of the relevant tar archive, in addition to
 the list of patches.
-
+	-d Copy the patch and series files to this directory
+	-l Create the link to the patches and the series file (quilt setup -l seriesfile).
 "
 		exit 0
 	else
@@ -55,7 +55,7 @@ parse_series()
 	echo "SERIES $series"
 }
 
-options=`getopt -o d:h -- "$@"`
+options=`getopt -o d:l:h -- "$@"`
 
 if [ $? -ne 0 ]
 then
@@ -63,13 +63,17 @@ then
 fi
 
 eval set -- "$options"
-
+link_opt=0
 while true
 do
 	case "$1" in
 	-d)
 		opt_source=$2
 		shift 2 ;;
+	-l)	
+		link_opt=1	
+		series_file=$2
+		shift 2 ;; 
 	-h)
 		usage -h ;;
 	--)
@@ -77,6 +81,34 @@ do
 		break ;;
 	esac
 done
+
+status=0
+packagedir=.
+
+if [ $link_opt -eq 1 ]
+then
+	if [ $# -ne 0 ]
+	then
+		usage
+	fi
+	if ! [ -e "$series_file" ]
+	then
+		echo $"Series file $series_file not found"
+		exit 1
+	fi
+	if ! [ -e "$opt_source" ]
+	then
+		source=$(dirname $(dirname $series_file))/patches
+	else
+		source=$opt_source	
+	fi
+	echo $"create link patch $packagedir/patches to $source"
+	ln -s "$source" "${packagedir}/patches" 
+	rm -rf "${packagedir}/series"
+	echo $"creat link of $series_file"
+	ln -s "$series_file" "${packagedir}/series"	
+	exit 0
+fi
 
 if [ $# -ne 1 ]
 then
@@ -113,8 +145,6 @@ else
 	source="$(dirname "$series_file")"
 fi
 
-status=0
-packagedir=.
 while read cmd arg arg2 && \
 	[ $status -eq 0 ]
 do
