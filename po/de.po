@@ -204,7 +204,7 @@ msgstr "Patch $opt_combine ist nicht vor Patch $last_patch angewandt."
 msgid "Cannot change into .pc/$last_patch"
 msgstr "Kann nicht in Verzeichnis .pc/$last_patch wechseln."
 
-#: ../quilt/diff.in:239 ../scripts/rpatch.in:67
+#: ../quilt/diff.in:239 ../scripts/rpatch.in:60
 msgid "Failed to copy files to temporary directory"
 msgstr "Konnte Dateien nicht in ein tempor‰res Verzeichnis kopieren"
 
@@ -212,7 +212,7 @@ msgstr "Konnte Dateien nicht in ein tempor‰res Verzeichnis kopieren"
 msgid "Cannot change to temporary directory"
 msgstr "Kann nicht in tempor‰res Verzeichnis wechseln"
 
-#: ../quilt/diff.in:267 ../scripts/rpatch.in:95
+#: ../quilt/diff.in:267 ../scripts/rpatch.in:88
 msgid "Failed to patch temporary files"
 msgstr "Konnte tempor‰re Dateien nicht patchen"
 
@@ -797,7 +797,7 @@ msgstr "Kopiere Seriendatei"
 msgid "Creatig link to series file $arg"
 msgstr ""
 
-#: ../quilt/setup.in:243
+#: ../quilt/setup.in:244
 msgid "Directory $packagedir set up."
 msgstr "Verzeichnis $packagedir aufgebaut."
 
@@ -843,31 +843,36 @@ msgstr ""
 msgid "Usage: $0 [-fqv] patchname"
 msgstr "Verwendung: $0 [-fqv] patchname"
 
-#: ../scripts/apatch.in:43
+#: ../scripts/apatch.in:29
 msgid "Interrupted by user; patch $patch was not applied."
 msgstr "Unterbrechung durch Benutzer; Patch $patch wurde nicht angewandt."
 
-#: ../scripts/apatch.in:54
+#: ../scripts/apatch.in:40
 msgid "Patch file $patch_file appears to be empty"
 msgstr "Patch-Datei $patch_file scheint leer zu sein"
 
-#: ../scripts/apatch.in:94
+#: ../scripts/apatch.in:81
 msgid "Applying $patch"
 msgstr "Anwenden von $patch"
 
-#: ../scripts/apatch.in:113
+#: ../scripts/apatch.in:86
+#, fuzzy
+msgid "Patch file $patch_file did not exist, push failed"
+msgstr "Patch-Datei $patch_file scheint leer zu sein"
+
+#: ../scripts/apatch.in:120
 msgid "Patch $patch appears to be empty, applied"
 msgstr "Patch $patch scheint leer zu sein, angewandt"
 
-#: ../scripts/apatch.in:116
+#: ../scripts/apatch.in:123
 msgid "Applied $patch (forced; needs refresh)"
 msgstr "Patch $patch angewandt (erzwungen, muﬂ aufgefrischt werden (Refresh))"
 
-#: ../scripts/apatch.in:120
+#: ../scripts/apatch.in:127
 msgid "Patch $patch does not apply (enforce with -f)"
 msgstr "Patch $patch l‰ﬂt sich nicht anwenden (erzwingen mit -f)"
 
-#: ../scripts/apatch.in:177 ../scripts/rpatch.in:217
+#: ../scripts/apatch.in:184 ../scripts/rpatch.in:211
 msgid "The topmost patch $top needs to be refreshed first."
 msgstr "Der oberste Patch $top muss zuerst aufgefrischt werden (Refresh)."
 
@@ -875,16 +880,16 @@ msgstr "Der oberste Patch $top muss zuerst aufgefrischt werden (Refresh)."
 msgid "Usage: $0 [-fRq] patchname"
 msgstr "Verwendung: $0 [-fRq] patchname"
 
-#: ../scripts/rpatch.in:110
+#: ../scripts/rpatch.in:103
 #, fuzzy
 msgid "Patch $patch does not remove cleanly (enforce with -f)."
 msgstr "Patch $patch kann nicht entfernt werden (erzwingen mit -f)"
 
-#: ../scripts/rpatch.in:127
+#: ../scripts/rpatch.in:120
 msgid "Patch $patch appears to be empty, removed"
 msgstr "Patch $patch scheint leer zu sein, entfernt"
 
-#: ../scripts/rpatch.in:160
+#: ../scripts/rpatch.in:153
 msgid "Removing $patch"
 msgstr "Entferne $patch"
 

@@ -144,7 +144,7 @@ msgstr ""
 msgid "Cannot change into .pc/$last_patch"
 msgstr ""
 
-#: ../quilt/diff.in:239 ../scripts/rpatch.in:67
+#: ../quilt/diff.in:239 ../scripts/rpatch.in:60
 msgid "Failed to copy files to temporary directory"
 msgstr ""
 
@@ -152,7 +152,7 @@ msgstr ""
 msgid "Cannot change to temporary directory"
 msgstr ""
 
-#: ../quilt/diff.in:267 ../scripts/rpatch.in:95
+#: ../quilt/diff.in:267 ../scripts/rpatch.in:88
 msgid "Failed to patch temporary files"
 msgstr ""
 
@@ -599,7 +599,7 @@ msgstr ""
 msgid "Creatig link to series file $arg"
 msgstr ""
 
-#: ../quilt/setup.in:243
+#: ../quilt/setup.in:244
 msgid "Directory $packagedir set up."
 msgstr ""
 
@@ -635,31 +635,35 @@ msgstr ""
 msgid "Usage: $0 [-fqv] patchname"
 msgstr ""
 
-#: ../scripts/apatch.in:43
+#: ../scripts/apatch.in:29
 msgid "Interrupted by user; patch $patch was not applied."
 msgstr ""
 
-#: ../scripts/apatch.in:54
+#: ../scripts/apatch.in:40
 msgid "Patch file $patch_file appears to be empty"
 msgstr ""
 
-#: ../scripts/apatch.in:94
+#: ../scripts/apatch.in:81
 msgid "Applying $patch"
 msgstr ""
 
-#: ../scripts/apatch.in:113
-msgid "Patch $patch appears to be empty, applied"
-msgstr ""
-
-#: ../scripts/apatch.in:116
-msgid "Applied $patch (forced; needs refresh)"
+#: ../scripts/apatch.in:86
+msgid "Patch file $patch_file did not exist, push failed"
 msgstr ""
 
 #: ../scripts/apatch.in:120
+msgid "Patch $patch appears to be empty, applied"
+msgstr ""
+
+#: ../scripts/apatch.in:123
+msgid "Applied $patch (forced; needs refresh)"
+msgstr ""
+
+#: ../scripts/apatch.in:127
 msgid "Patch $patch does not apply (enforce with -f)"
 msgstr ""
 
-#: ../scripts/apatch.in:177 ../scripts/rpatch.in:217
+#: ../scripts/apatch.in:184 ../scripts/rpatch.in:211
 msgid "The topmost patch $top needs to be refreshed first."
 msgstr ""
 
@@ -667,15 +671,15 @@ msgstr ""
 msgid "Usage: $0 [-fRq] patchname"
 msgstr ""
 
-#: ../scripts/rpatch.in:110
+#: ../scripts/rpatch.in:103
 msgid "Patch $patch does not remove cleanly (enforce with -f)."
 msgstr ""
 
-#: ../scripts/rpatch.in:127
+#: ../scripts/rpatch.in:120
 msgid "Patch $patch appears to be empty, removed"
 msgstr ""
 
-#: ../scripts/rpatch.in:160
+#: ../scripts/rpatch.in:153
 msgid "Removing $patch"
 msgstr ""
 

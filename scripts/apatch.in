@@ -23,6 +23,40 @@ usage()
 	exit 1
 }
 
+interrupt()
+{
+	rollback_patch $1
+	echo $"Interrupted by user; patch $patch was not applied."
+	exit 1
+}
+
+apply_patch()
+{
+	local patch=$1
+	local patch_file=$(patch_file_name $patch) output
+
+	if ! [ -s $patch_file ]
+	then
+		echo $"Patch file $patch_file appears to be empty"
+		return 0
+	fi
+	
+	if [ "x${patch_file:(-3)}" = "x.gz" ]
+	then
+		gzip -cd $patch_file \
+		| @PATCH@ $(patch_args $patch) --backup --prefix=".pc/$patch/" \
+			-E $silent $force_apply 2>&1
+	elif [ "x${patch_file:(-4)}" = "x.bz2" ]
+	then
+		bzip2 -cd $patch_file \
+		| @PATCH@ $(patch_args $patch) --backup --prefix=".pc/$patch/" \
+			-E $silent $force_apply 2>&1
+	else
+		@PATCH@ $(patch_args $patch) --backup --prefix=".pc/$patch/" \
+			-E $silent $force_apply -i $patch_file 2>&1
+	fi
+}
+
 rollback_patch()
 {
 	local patch=$1 pc_file=$(gen_tempfile)
@@ -37,48 +71,27 @@ rollback_patch()
 	rm -f $pc_file
 }
 
-interrupt()
+apatch()
 {
-	rollback_patch $1
-	echo $"Interrupted by user; patch $patch was not applied."
-	exit 1
-}
-
-apply_patch()
-{
-	local patch=$1
+	local patch=$(stripit $1)
 	local patch_file=$(patch_file_name $patch) output
+	local file status
 
-	if ! [ -e "$patch_file" ]
+	
+	echo $"Applying $patch"
+	trap "interrupt $patch" SIGINT
+	
+	if ! [ -e "$patch_file" -o -n "$opt_force" ]
 	then
 		echo $"Patch file $patch_file did not exist, push failed"
 		exit 1
 	fi
-	if ! [ -s $patch_file ]
-	then
-		echo $"Patch file $patch_file appears to be empty"
-		return 0
-	fi
-	
-	if [ "x${patch_file:(-3)}" = "x.gz" ]
-	then
-		output="$(
-		gzip -cd $patch_file \
-		| @PATCH@ $(patch_args $patch) --backup --prefix=".pc/$patch/" \
-			-E $silent $force_apply 2>&1 )"
-	elif [ "x${patch_file:(-4)}" = "x.bz2" ]
-	then
-		output="$(
-		bzip2 -cd $patch_file \
-		| @PATCH@ $(patch_args $patch) --backup --prefix=".pc/$patch/" \
-			-E $silent $force_apply 2>&1 )"
-	else
-		output="$(
-		@PATCH@ $(patch_args $patch) --backup --prefix=".pc/$patch/" \
-			-E $silent -i $patch_file $force_apply 2>&1 )"
-	fi
-	
+
+	output="$(apply_patch $patch)"
 	status=${PIPESTATUS[0]}
+
+	trap "" SIGINT
+
 	if [ $status -ne 0 -a -z "$opt_leave_rejects" ]
 	then
 		# The reject files are removed in rollback_patch.
@@ -88,21 +101,6 @@ apply_patch()
 	then
 		echo "$output"
 	fi
-	return $status
-}
-
-apatch()
-{
-	local patch=$(stripit $1)
-	local file status
-
-	echo $"Applying $patch"
-	trap "interrupt $patch" SIGINT
-
-	apply_patch $patch
-	status=$?
-
-	trap "" SIGINT
 
 	if [ $status -eq 0 -o -n "$opt_force" ]
 	then
@@ -112,6 +110,10 @@ apatch()
 			rm -f .pc/$patch~refresh
 		else
 			touch .pc/$patch~refresh
+		fi
+		if [ -e ".pc/$patch" ]
+		then
+			touch .pc/$patch/.timestamp
 		fi
 		if [ "$(shopt -s nullglob ; echo .pc/$patch/*)" = "" ]
 		then

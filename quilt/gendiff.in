@@ -74,9 +74,7 @@ fi
 
 for file in $(files_in_patch $save_patch_name)
 do
-	if [ ! -e $file ]; then
-		echo "$file has been deleted"
-	else
+	if [ -e $file ]; then
 		base_dir=$(pwd)
 		ln -s $base_dir/.pc/$save_patch_name/$file ${file}~old
 		diff -Nur ${file}~old $file 

@@ -57,7 +57,7 @@ DIRT +=		$(BIN_IN:%=bin/%)
 
 QUILT_IN :=	add applied delete diff files import new next patches \
 		pop previous push refresh remove series setup top unapplied \
-		fork snapshot edit gendiff
+		fold fork snapshot edit gendiff
 
 QUILT_SRC :=	$(QUILT_IN:%=%.in)
 QUILT :=	$(QUILT_IN)
@@ -78,9 +78,9 @@ DIRT +=		lib/backup-files lib/backup-files.o
 DOC_IN :=	README
 DOC_SRC :=	$(DOC_IN:%=doc/%.in)
 DOC :=		$(DOC_IN)
-SRC +=		$(DOC_SRC) doc/docco.txt
-SRC +=          doc/consider-for-docs-1.mail doc/consider-for-docs-2.mail \
-		doc/consider-for-docs-3.mail doc/sample.quiltrc
+SRC +=		$(DOC_SRC)
+SRC +=          doc/main.tex doc/quilt.pdf doc/Makefile \
+		doc/sample.quiltrc
 DIRT +=		$(DOC_IN:%=doc/%)
 
 MAN1 :=		bin/guards.1
@@ -132,8 +132,7 @@ reference : $(QUILT:%=quilt/%)
 		echo; \
 		(bash -c ". scripts/patchfns ;LC_ALL=C . $$i -h"); \
 	done | \
-	sed -e 's/^Usage: \?// ; p ; d' \
-	    -e 's/^/  /'
+	sed -e 's/^Usage: \?//' -e 's/^/  /'
 
 bin/guards.1 : bin/guards
 	mkdir -p $$(dirname $@)
@@ -216,7 +215,9 @@ install : scripts
 
 	@INSTALL@ -d $(BUILD_ROOT)$(docdir)/$(PACKAGE)-$(VERSION)/
 	@INSTALL@ -m 644 doc/README \
-		  $(BUILD_ROOT)$(docdir)/$(PACKAGE)-$(VERSION)/
+		$(BUILD_ROOT)$(docdir)/$(PACKAGE)-$(VERSION)/
+	@INSTALL@ -m 644 doc/quilt.pdf \
+		$(BUILD_ROOT)$(docdir)/$(PACKAGE)-$(VERSION)/
 
 	@INSTALL@ -d $(BUILD_ROOT)$(mandir)/man1
 	@INSTALL@ -m 644 $(MAN1) $(BUILD_ROOT)$(mandir)/man1/
