@@ -103,6 +103,12 @@ save_patches ()
 	local patch_file=$(patch_file_name $patch)
 	local saved_pc_file=$(pc_file_name $saved_patch)	
 
+	#if we add a file to a new create patch, the patch_file are not exist
+
+	if ! [ -e "${patch_file}" ]; then
+		return	
+	fi
+
 	if  [ -e $saved_pc_file ]; then
 		if [ $opt_Keep -eq 0 -a $opt_Overwrite -eq 0 ]; then
 			while :; do
