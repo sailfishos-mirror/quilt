@@ -26,8 +26,12 @@ usage()
 Initializes a source tree from a patch series file.  The patch series
 file must contain the name of the relevant tar archive, in addition to
 the list of patches.
-	-d Copy the patch and series files to this directory
-	-l Create the link to the patches and the series file (quilt setup -l seriesfile).
+
+-d	The directory that contains the archives and patches. Defaults
+	to the directory of the series/spec file.
+
+-l	Make the patches directory a symbolic link. If a series file is
+	specified, also create a symlink to the series file.
 "
 		exit 0
 	else
@@ -55,7 +59,7 @@ parse_series()
 	echo "SERIES $series"
 }
 
-options=`getopt -o d:l:h -- "$@"`
+options=`getopt -o d:lh -- "$@"`
 
 if [ $? -ne 0 ]
 then
@@ -70,10 +74,9 @@ do
 	-d)
 		opt_source=$2
 		shift 2 ;;
-	-l)	
-		link_opt=1	
-		series_file=$2
-		shift 2 ;; 
+	-l)
+		opt_link=1
+		shift ;;
 	-h)
 		usage -h ;;
 	--)
@@ -84,31 +87,6 @@ done
 
 status=0
 packagedir=.
-
-if [ $link_opt -eq 1 ]
-then
-	if [ $# -ne 0 ]
-	then
-		usage
-	fi
-	if ! [ -e "$series_file" ]
-	then
-		echo $"Series file $series_file not found"
-		exit 1
-	fi
-	if ! [ -e "$opt_source" ]
-	then
-		source=$(dirname $(dirname $series_file))/patches
-	else
-		source=$opt_source	
-	fi
-	echo $"create link patch $packagedir/patches to $source"
-	ln -s "$source" "${packagedir}/patches" 
-	rm -rf "${packagedir}/series"
-	echo $"creat link of $series_file"
-	ln -s "$series_file" "${packagedir}/series"	
-	exit 0
-fi
 
 if [ $# -ne 1 ]
 then
@@ -142,17 +120,21 @@ elif [ -n "$spec_file" ]
 then
 	source="$(dirname "$spec_file")"
 else
-	source="$(dirname "$series_file")"
+	source="$(dirname $(dirname $series_file))/patches"
 fi
 
-while read cmd arg arg2 && \
-	[ $status -eq 0 ]
+status=0
+packagedir=.
+while read cmd arg arg2
 do
 	case $cmd in
 	SOURCEDIR)
 		# Directory for package sources
-		source="$arg"
-		echo $"Reading sources from $arg"
+		if [ -z "$source" ]
+		then
+			source="$arg"
+			echo $"Reading sources from $arg"
+		fi
 		;;
 	SOURCE)
 		echo $"Unpacking archive $source/$arg"
@@ -176,20 +158,73 @@ do
 		fi
 		;;
 	PATCH)
-		echo $"Copying patch $source/$arg"
-		mkdir -p "$packagedir/patches/" && \
-		cp "$source/$arg" "$packagedir/patches/" \
+		if [ -n "$opt_link" ]
+		then
+			if ! [ -e "$packagedir/patches" ]
+			then
+				arg="$source"
+				if [ "${arg:0:1}" != "/" ]
+				then
+					arg="$PWD/$arg"
+				fi
+				echo $"Creating link to patches directory $arg"
+				ln -s "$arg" "$packagedir/patches"
+			elif [ -z "`readlink $packagedir/patches`" ]
+			then
+				echo $"$packagedir/patches exist, but not symlink" >&2
+				status=1
+				break
+			fi
+		else
+			echo $"Copying patch $source/$arg"
+			mkdir -p "$packagedir/patches/" && \
+			cp "$source/$arg" "$packagedir/patches/"
+		fi
 		;;
 	SERIES)
-		echo $"Copying series file"
-		cp "$arg" "$packagedir/patches/series"
+		if [ -n "$opt_link" ]
+		then
+			# The patches dir is a symlink to the directory
+			# containing the patches. Don't write the series
+			# file into that directory.
+			if [ -e "$packagedir/series" ]
+			then
+				echo $"File $packagedir/series exists; will not override." >&2
+				status=1
+			elif [ -n "$spec_file" ]
+			then
+				# There is no series file to link to; the
+				# series file we are reading from is a
+				# temporary file.
+				echo $"Copying series file"
+				cp "$arg" "$packagedir/series"
+			else
+				# Create a symlink to the series file. We don't
+				# want to mess with changing relative symlink
+				# targets...
+				if [ "${arg:0:1}" != "/" ]
+				then
+					arg="$PWD/$arg"
+				fi
+				echo $"Creatig link to series file $arg"
+				ln -s "$arg" "$packagedir/series"
+			fi
+		else
+			echo $"Copying series file"
+			cp "$arg" "$packagedir/patches/series"
+		fi
 		;;
 	*)
 		status=1
 		break
 		;;
 	esac
-	status=$?
+	s=$?
+	if [ $status -eq 0 ]
+	then
+		status=$s
+		[ $status != 0 ] && break
+	fi
 done \
 < <(parse_series "$series_file")
 
