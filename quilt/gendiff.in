@@ -1,0 +1,93 @@
+#! @BASH@
+#  This script is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License version 2 as
+#  published by the Free Software Foundation.
+#
+#  See the COPYING and AUTHORS files for more details.
+# Read in library functions
+if [ "$(type -t patch_file_name)" != function ]
+then
+	if ! [ -r @SCRIPTS@/patchfns ]
+	then
+		echo "Cannot read library @SCRIPTS@/patchfns" >&2
+		exit 1
+	fi
+	. @SCRIPTS@/patchfns
+fi
+
+usage()
+{
+	local redirect
+	if [ x$1 != x-h ]
+	then
+		redirect='>&2'
+	fi
+	echo $"Usage: quilt gendiff" $redirect
+	
+	if [ x$1 = x-h ]
+	then
+		echo $"
+Produces a diff between
+     - the files patched with .quiltsave.<patchname> (old)
+     - the files patched with <patchname>
+"
+		exit 0
+	else
+		exit 1
+	fi
+}
+die ()
+{
+	local status=$1
+	[ -n "$workdir" ] && rm -rf $workdir
+	exit $status
+}
+
+options=`getopt -o h -- "$@"`
+
+if [ $? -ne 0 ]
+then
+	usage
+fi
+opt_Overwrite=0
+opt_Keep=0
+eval set -- "$options"
+
+while true
+do
+	case "$1" in
+	-h)
+		usage -h ;;
+	--)
+		shift
+		break ;;
+	esac
+done
+
+top=$(top_patch)
+save_patch_name=$(save_patch_name ${top})
+if [ ! -e ".pc/$save_patch_name" ]; then
+	echo "Does not exist the $save_patch_name in your .pc"
+	echo "please refresh patches first"
+	exit 1
+fi
+
+for file in $(files_in_patch $save_patch_name)
+do
+	if [ ! -e $file ]; then
+		echo "$file has been deleted"
+	else
+		base_dir=$(pwd)
+		ln -s $base_dir/.pc/$save_patch_name/$file ${file}~old
+		diff -Nur ${file}~old $file 
+		rm -rf ${file}~old
+	fi	
+done
+
+trap "die 1" SIGTERM
+
+die 0
+### Local Variables:
+### mode: shell-script
+### End:
+# vim:filetype=sh
