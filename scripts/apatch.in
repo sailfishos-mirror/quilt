@@ -49,6 +49,11 @@ apply_patch()
 	local patch=$1
 	local patch_file=$(patch_file_name $patch) output
 
+	if ! [ -e "$patch_file" ]
+	then
+		echo $"Patch file $patch_file did not exist, push failed"
+		exit 1
+	fi
 	if ! [ -s $patch_file ]
 	then
 		echo $"Patch file $patch_file appears to be empty"
