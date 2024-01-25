@@ -288,10 +288,11 @@ Initializes a source tree from an rpm spec file or a quilt series file.
 	directory. This is the default (since quilt version 0.67).
 
 The setup command is only guaranteed to work properly on spec files where
-applying all the patches is the last thing done in the %%prep section. This is
-a design limitation due to the fact that quilt can only operate on patches. If
-other commands in the %%prep section modify the patched files, this must
-happen first, otherwise you won't be able to push the patch series.
+applying all the patches is the last thing done in the %%prep section. This
+is a design limitation due to the fact that quilt can only operate on
+patches. If other commands in the %%prep section modify the patched files,
+this must happen first, otherwise you won't be able to push the patch
+series.
 "
 		exit 0
 	else

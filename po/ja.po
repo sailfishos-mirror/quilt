@@ -1616,12 +1616,11 @@ msgid ""
 "\tdirectory. This is the default (since quilt version 0.67).\n"
 "\n"
 "The setup command is only guaranteed to work properly on spec files where\n"
-"applying all the patches is the last thing done in the %%prep section. This "
-"is\n"
-"a design limitation due to the fact that quilt can only operate on patches. "
-"If\n"
-"other commands in the %%prep section modify the patched files, this must\n"
-"happen first, otherwise you won't be able to push the patch series.\n"
+"applying all the patches is the last thing done in the %%prep section. This\n"
+"is a design limitation due to the fact that quilt can only operate on\n"
+"patches. If other commands in the %%prep section modify the patched files,\n"
+"this must happen first, otherwise you won't be able to push the patch\n"
+"series.\n"
 msgstr ""
 "\n"
 "rpmの specファイルまたは quiltの seriesファイルを使って、ソースツリー\n"
@@ -1646,25 +1645,25 @@ msgstr ""
 "\trpmbuild はターゲットディレクトリで作業ツリーの生成を指示され\n"
 "\tる。\n"
 
-#: quilt/setup.in:396
+#: quilt/setup.in:397
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
 msgstr ""
 "%%prepセクションの解析に失敗しました。完全に作業が完了していない場合がありま"
 "す\\n"
 
-#: quilt/setup.in:399
+#: quilt/setup.in:400
 msgid "The -v option will show rpm's output\\n"
 msgstr "-vオプションを使って、rpmの出力を表示できます"
 
-#: quilt/setup.in:460 quilt/setup.in:472 quilt/setup.in:483
+#: quilt/setup.in:461 quilt/setup.in:473 quilt/setup.in:484
 msgid "File %s not found\\n"
 msgstr "ファイル %s が見つかりません"
 
-#: quilt/setup.in:463 quilt/setup.in:475 quilt/setup.in:486
+#: quilt/setup.in:464 quilt/setup.in:476 quilt/setup.in:487
 msgid "Unpacking archive %s\\n"
 msgstr "アーカイブ %s を展開しています\\n"
 
-#: quilt/setup.in:496
+#: quilt/setup.in:497
 msgid "Trying alternative patches and series names..."
 msgstr "別名の patches と series を試します..."
 
