@@ -658,8 +658,8 @@ filenames_in_patch()
 			{ if (sub(/^... /, "") == 0)
 				next
 			  # File name may be quoted
-			  if (sub(/^\"/, ""))
-				sub(/\"(\t.*|$)/, "")
+			  if (sub(/^"/, ""))
+				sub(/"(\t.*|$)/, "")
 			  else
 				sub(/\t.*/, "")
 			  if ($0 == "" || $0 == "/dev/null")
