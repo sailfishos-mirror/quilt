@@ -116,10 +116,11 @@ $ quilt grep " "
 
 $ quilt diff -p ab -z
 
+# Removal order is nondeterministic
 $ quilt pop
 > Removing patch patches/test.diff
-> Removing a: b [c]
-> Removing foo
+>~ Removing (a: b \[c\]|foo)
+>~ Removing (a: b \[c\]|foo)
 > Restoring foo bar
 >
 > No patches applied
