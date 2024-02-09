@@ -1648,7 +1648,7 @@ msgstr ""
 "の操作しかできないという設計上の制約である。もしパッチをあてたファイル\n"
 "を %prep セクション内の他のコマンドが修正するのであれば、先に行われな\n"
 "ければならない。それ以外の場合は、パッチシリーズをプッシュすることがで\n"
-"きない。"
+"きない。\n"
 
 #: quilt/setup.in:397
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
