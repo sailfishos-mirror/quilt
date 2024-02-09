@@ -1668,8 +1668,14 @@ msgid ""
 "applying all the patches is the last thing done in the %%prep section. This\n"
 "is a design limitation due to the fact that quilt can only operate on\n"
 "patches. If other commands in the %%prep section modify the patched files,\n"
-"this must happen first, otherwise you won't be able to push the patch\n"
+"they must come first, otherwise you won't be able to push the patch\n"
 "series.\n"
+"\n"
+"For example, a %%prep section where you first unpack a tarball, then\n"
+"apply patches, and lastly perform a tree-wide string substitution, is\n"
+"not OK. For \\\"quilt setup\\\" to work, it would have to be changed to\n"
+"unpacking the tarball, then performing the tree-wide string substitution,\n"
+"and lastly applying the patches.\n"
 msgstr ""
 "\n"
 "Initialisiert einen Quellbaum aus einer rpm-spec-Datei oder einer quilt-\n"
@@ -1686,7 +1692,8 @@ msgstr ""
 "\tDen maximalen Unscharf-Faktor (fuzz) setzen (benötigt rpm 4.6 oder \n"
 "\tspäter).\n"
 "\n"
-"--slow\tDie unrsprüngliche, langsame Methode zur Verarbeitung der spec-Datei\n"
+"--slow\tDie unrsprüngliche, langsame Methode zur Verarbeitung der spec-"
+"Datei\n"
 "\tverwenden. Bei dieser Methode erzeugt rpmbuild ein Arbeits-\n"
 "\tverzeichnis in einem temporären Verzeichnis, wobei alle Aktionen\n"
 "\taufgezeichnet werden; anschließend wird im Zielverzeichnis alles\n"
@@ -1697,25 +1704,25 @@ msgstr ""
 "\tdirekt im Zielverzeichnis.  Seit quilt Version 0.67 ist das die\n"
 "\tStandard-Methode.\n"
 
-#: quilt/setup.in:397
+#: quilt/setup.in:403
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
 msgstr ""
 "Der %%prep-Abschnitt von %s ist fehlgeschlagen; die Ergebnisse sind "
 "möglicherweise unvollständig.\\n"
 
-#: quilt/setup.in:400
+#: quilt/setup.in:406
 msgid "The -v option will show rpm's output\\n"
 msgstr "Die Option -v zeigt die Ausgaben von rpm an\\n"
 
-#: quilt/setup.in:461 quilt/setup.in:473 quilt/setup.in:484
+#: quilt/setup.in:467 quilt/setup.in:479 quilt/setup.in:490
 msgid "File %s not found\\n"
 msgstr "Datei %s nicht gefunden\\n"
 
-#: quilt/setup.in:464 quilt/setup.in:476 quilt/setup.in:487
+#: quilt/setup.in:470 quilt/setup.in:482 quilt/setup.in:493
 msgid "Unpacking archive %s\\n"
 msgstr "Entpacken des Archivs %s\\n"
 
-#: quilt/setup.in:497
+#: quilt/setup.in:503
 msgid "Trying alternative patches and series names..."
 msgstr "Versuch alternativer patches- und series-Namen ..."
 

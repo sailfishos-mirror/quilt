@@ -1639,6 +1639,7 @@ msgstr ""
 "fuzz=N] [--slow|--fast] {fichier_spec|fichier_séries}\\n"
 
 #: quilt/setup.in:268
+#, fuzzy
 msgid ""
 "\n"
 "Initializes a source tree from an rpm spec file or a quilt series file.\n"
@@ -1667,8 +1668,14 @@ msgid ""
 "applying all the patches is the last thing done in the %%prep section. This\n"
 "is a design limitation due to the fact that quilt can only operate on\n"
 "patches. If other commands in the %%prep section modify the patched files,\n"
-"this must happen first, otherwise you won't be able to push the patch\n"
+"they must come first, otherwise you won't be able to push the patch\n"
 "series.\n"
+"\n"
+"For example, a %%prep section where you first unpack a tarball, then\n"
+"apply patches, and lastly perform a tree-wide string substitution, is\n"
+"not OK. For \\\"quilt setup\\\" to work, it would have to be changed to\n"
+"unpacking the tarball, then performing the tree-wide string substitution,\n"
+"and lastly applying the patches.\n"
 msgstr ""
 "\n"
 "Initialise un arbre de sources à partir d'un fichier de\n"
@@ -1703,24 +1710,24 @@ msgstr ""
 "patchés, ceci doit se produire en premier, sinon la série de patches ne\n"
 "pourra pas être appliquée.\n"
 
-#: quilt/setup.in:397
+#: quilt/setup.in:403
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
 msgstr ""
 "La section %%prep de %s a échoué ; les résultats sont peut-être incomplets\\n"
 
-#: quilt/setup.in:400
+#: quilt/setup.in:406
 msgid "The -v option will show rpm's output\\n"
 msgstr "L'option -v montre les affichages de rpm\\\\n"
 
-#: quilt/setup.in:461 quilt/setup.in:473 quilt/setup.in:484
+#: quilt/setup.in:467 quilt/setup.in:479 quilt/setup.in:490
 msgid "File %s not found\\n"
 msgstr "Le fichier %s est introuvable\\n"
 
-#: quilt/setup.in:464 quilt/setup.in:476 quilt/setup.in:487
+#: quilt/setup.in:470 quilt/setup.in:482 quilt/setup.in:493
 msgid "Unpacking archive %s\\n"
 msgstr "Désarchivage de %s\\n"
 
-#: quilt/setup.in:497
+#: quilt/setup.in:503
 msgid "Trying alternative patches and series names..."
 msgstr "Tentative d'utilisation des noms de patches et séries alternatifs..."
 

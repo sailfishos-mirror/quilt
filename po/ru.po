@@ -324,8 +324,8 @@ msgstr ""
 msgid ""
 "Cannot diff patches with -p%s, please specify -p0, -p1, or -pab instead\\n"
 msgstr ""
-"Невозможно сравнить патчи с -p%s, пожалуйста, используйте -p0, -p1 либо -"
-"pab\\n"
+"Невозможно сравнить патчи с -p%s, пожалуйста, используйте -p0, -p1 либо -pab"
+"\\n"
 
 #: quilt/diff.in:244
 msgid "No snapshot to diff against\\n"
@@ -1599,6 +1599,7 @@ msgstr ""
 "[--slow|--fast] {файл-spec|файл-series}\\n"
 
 #: quilt/setup.in:268
+#, fuzzy
 msgid ""
 "\n"
 "Initializes a source tree from an rpm spec file or a quilt series file.\n"
@@ -1627,8 +1628,14 @@ msgid ""
 "applying all the patches is the last thing done in the %%prep section. This\n"
 "is a design limitation due to the fact that quilt can only operate on\n"
 "patches. If other commands in the %%prep section modify the patched files,\n"
-"this must happen first, otherwise you won't be able to push the patch\n"
+"they must come first, otherwise you won't be able to push the patch\n"
 "series.\n"
+"\n"
+"For example, a %%prep section where you first unpack a tarball, then\n"
+"apply patches, and lastly perform a tree-wide string substitution, is\n"
+"not OK. For \\\"quilt setup\\\" to work, it would have to be changed to\n"
+"unpacking the tarball, then performing the tree-wide string substitution,\n"
+"and lastly applying the patches.\n"
 msgstr ""
 "\n"
 "Инициализирует дерево исходных кодов из spec-файла rpm или файла series.\n"
@@ -1664,24 +1671,24 @@ msgstr ""
 "должны\n"
 "идти раньше, иначе вы не сможете применить серию патчей.\n"
 
-#: quilt/setup.in:397
+#: quilt/setup.in:403
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
 msgstr ""
 "Секция %%prep файла %s содержит ошибки; результаты могут быть незавершены\\n"
 
-#: quilt/setup.in:400
+#: quilt/setup.in:406
 msgid "The -v option will show rpm's output\\n"
 msgstr "Опция -v покажет вывод rpm\\n"
 
-#: quilt/setup.in:461 quilt/setup.in:473 quilt/setup.in:484
+#: quilt/setup.in:467 quilt/setup.in:479 quilt/setup.in:490
 msgid "File %s not found\\n"
 msgstr "Файл %s не найден\\n"
 
-#: quilt/setup.in:464 quilt/setup.in:476 quilt/setup.in:487
+#: quilt/setup.in:470 quilt/setup.in:482 quilt/setup.in:493
 msgid "Unpacking archive %s\\n"
 msgstr "Распаковка архива %s\\n"
 
-#: quilt/setup.in:497
+#: quilt/setup.in:503
 msgid "Trying alternative patches and series names..."
 msgstr "Попытка использовать альтернативные имена для series и patches…"
 
@@ -1756,8 +1763,8 @@ msgstr ""
 
 #: quilt/upgrade.in:65
 msgid ""
-"The quilt meta-data in %s are already in the version %s format; nothing to "
-"do\\n"
+"The quilt meta-data in %s are already in the version %s format; nothing to do"
+"\\n"
 msgstr "Метаданные quilt в %s уже в формате версии %s; нечего делать\\n"
 
 #: quilt/upgrade.in:69
