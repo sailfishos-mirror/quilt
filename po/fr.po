@@ -1639,7 +1639,6 @@ msgstr ""
 "fuzz=N] [--slow|--fast] {fichier_spec|fichier_séries}\\n"
 
 #: quilt/setup.in:268
-#, fuzzy
 msgid ""
 "\n"
 "Initializes a source tree from an rpm spec file or a quilt series file.\n"
@@ -1707,8 +1706,15 @@ msgstr ""
 "action effectuée à la fin de la section %%prep. Ceci est une limitation\n"
 "conceptuelle liée au fait que quilt peut uniquement manipuler des patches.\n"
 "Si d'autres commandes dans la section %%prep modifient les fichiers\n"
-"patchés, ceci doit se produire en premier, sinon la série de patches ne\n"
+"patchés, celles-ci doivent arriver avant, sinon la série de patches ne\n"
 "pourra pas être appliquée.\n"
+"\n"
+"Par exemple, une section %%prep dans laquelle on extrait une archive, puis\n"
+"on applique des patches, et enfin on applique une substitution de chaîne\n"
+"sur l'arbre ainsi généré, ne pourra pas être gérée. Pour que\n"
+"\\\"quilt setup\\\" fonctionne, il faudrait, à la place, extraire\n"
+"l'archive, puis appliquer la substitution de chaîne, et enfin appliquer\n"
+"les patches.\n"
 
 #: quilt/setup.in:403
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
