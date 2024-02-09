@@ -291,8 +291,14 @@ The setup command is only guaranteed to work properly on spec files where
 applying all the patches is the last thing done in the %%prep section. This
 is a design limitation due to the fact that quilt can only operate on
 patches. If other commands in the %%prep section modify the patched files,
-this must happen first, otherwise you won't be able to push the patch
+they must come first, otherwise you won't be able to push the patch
 series.
+
+For example, a %%prep section where you first unpack a tarball, then
+apply patches, and lastly perform a tree-wide string substitution, is
+not OK. For \"quilt setup\" to work, it would have to be changed to
+unpacking the tarball, then performing the tree-wide string substitution,
+and lastly applying the patches.
 "
 		exit 0
 	else
