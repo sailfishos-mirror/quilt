@@ -1,0 +1,215 @@
+#! /bin/bash
+
+# Recognizes tar archive extraction using the options listed below.  Any other
+# operations or options will cause the tar command to be executed directly,
+# with no special processing.
+
+declare -r short_opts=ajJvxzZ
+declare -r short_opts_arg=CfI
+declare -r -A long_opts=(
+	[--auto-compress]=1 [--bzip2]=1 [--compress]=1 [--extract]=1 [--file]=1
+	[--get]=1 [--gunzip]=1 [--gzip]=1 [--lzip]=1 [--lzma]=1 [--lzop]=1
+	[--no-auto-compress]=1 [--uncompress]=1 [--ungzip]=1 [--verbose]=1
+	[--xz]=1 [--zstd]=1
+)
+declare -r -A long_opts_arg=(
+	[--use-compress-program]=1
+)
+
+command=${0##*/}
+original_args=("$@")
+args=()
+
+opt_extract=
+opt_directory=
+opt_file=
+
+PATH=${PATH#*:}
+
+traditional_to_unix() {
+	local opts=$1 args=()
+	shift
+
+	[[ "$opts" =~ ^[Acdrtux] ]] || return
+
+	while [ -n "$opts" ]; do
+		args+=("-${opts:0:1}")
+		if [[ "$opts" =~ ^[$short_opts_arg] ]]; then
+			[ $# -ge 1 ] || return 1
+			args+=("$1")
+			shift
+		else
+			[[ "$opts" =~ ^[$short_opts] ]] || return
+		fi
+		opts="${opts:1}"
+	done
+
+	printf "%q " "${args[@]}" "$@"
+}
+
+debug() {
+	echo "$@">&2
+}
+
+fallback() {
+	debug "falling back to $command"
+	exec "$command" "${original_args[@]}"
+}
+
+[ $# -gt 0 ] || fallback
+
+if ! [[ "$1" =~ ^- ]]; then
+	args=$(traditional_to_unix "$@") || fallback
+	set -- $args
+fi
+
+set_opt_file() {
+	[ -n "$1" ] || fallback
+	opt_file=$1
+}
+
+set_opt_directory() {
+	[ -n "$1" ] || fallback
+	opt_directory=$1
+}
+
+short_opt() {
+	debug option "$1"
+	case "$1" in
+	-x)
+		opt_extract=1
+		;;
+	esac
+	args+=("$1")
+}
+
+short_opt_arg() {
+	debug option "$1" "$2"
+	case "$1" in
+	-C)
+		set_opt_directory "$2"
+		;;
+	-f)
+		set_opt_file "$2"
+		;;
+	*)
+		args+=("$1$2")
+		;;
+	esac
+}
+
+long_opt() {
+	debug option "$1" "$2"
+	case "$1" in
+	--extract|--get)
+		opt_extract=1
+		;;
+	esac
+	args+=("$1")
+}
+
+long_opt_arg() {
+	debug option "$1" "$2"
+	case "$1" in
+	--directory)
+		set_opt_directory "$2"
+		;;
+	--file)
+		set_opt_file "$2"
+		;;
+	*)
+		args+=("$1=$2")
+		;;
+	esac
+}
+
+while [ $# -gt 0 ]; do
+	if [[ "$1" =~ ^-- ]]; then
+		[ "$1" != -- ] || break
+		if [[ "$1" =~ ^(--.*)=(.*) ]]; then
+			[ -n "${long_opts_arg[${BASH_REMATCH[1]}]}" ] || fallback
+			long_opt_arg "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}"
+			shift
+		elif [ -n "${long_opts_arg[$1]}" ]; then
+			[ $# -ge 2 ] || fallback
+			long_opt_arg "$1" "$2"
+			shift 2
+		elif [ -n "${long_opts[$1]}" ]; then
+			long_opt "$1"
+			shift
+		else
+			fallback
+		fi
+	elif [[ "$1" =~ ^- ]]; then
+		[ "$1" != - ] || break
+		if [[ "$1" =~ ^(-[$short_opts])(.*) ]]; then
+			short_opt "${BASH_REMATCH[1]}"
+			shift
+			if [ -n "${BASH_REMATCH[2]}" ]; then
+				set -- "-${BASH_REMATCH[2]}" "$@"
+			fi
+		elif [[ "$1" =~ ^(-[$short_opts_arg])(.*) ]]; then
+			if [ -z "${BASH_REMATCH[2]}" ]; then
+				[ $# -ge 2 ] || fallback
+				short_opt_arg "${BASH_REMATCH[1]}" "$2"
+				shift 2
+			else
+				short_opt_arg "${BASH_REMATCH[1]}" "${BASH_REMATCH[2]}"
+				shift
+			fi
+		else
+			fallback
+		fi
+	else
+		break
+	fi
+done
+
+[ -n "$opt_extract" ] || fallback
+! [[ "/${opt_directory:-.}/" =~ /\.\./|^// ]] || fallback
+
+mkpath() {
+	if [ "$1" == . ]; then
+		echo "$2"
+	elif [ "$2" == . ]; then
+		echo "$1"
+	else
+		echo "$1/$2"
+	fi
+}
+
+if [ -n "$QUILT_WORKDIR" ]; then
+	cleanup() {
+		rm -rf "$tmpdir"
+	}
+
+	dir=${opt_directory:-.}
+	pattern=$(mkpath "$dir" ".$command.XXXXXX")
+	tmpdir=$(mktemp -d "$pattern" 2> /dev/null) || fallback
+	trap cleanup EXIT
+	opt_directory=$tmpdir
+fi
+
+[ -z "$opt_directory" ] || args+=("-C$opt_directory")
+[ -z "$opt_file" ] || args+=("-f$opt_file")
+
+args+=("$@")
+
+"$command" "${args[@]}" || exit
+
+if [ -n "$QUILT_WORKDIR" ]; then
+	workdir=$(mkpath "$QUILT_WORKDIR" "$dir")
+	shopt -s dotglob
+	files=( "$opt_directory"/* )
+	for file in "${files[@]##*/}"; do
+		if [ -e "$(mkpath "$dir" "$file")" -o \
+		     -e "$(mkpath "$workdir" "$file")" ]; then
+			printf $"Refusing to overwrite %s\n" \
+				"$(mkpath "$dir" "$file")"
+			exit 1
+		fi
+	done
+	mkdir -p "$workdir" || exit
+	cp -dlR "${files[@]}" "$workdir/" || exit
+	mv "${files[@]}" "$dir/" || exit
+fi
