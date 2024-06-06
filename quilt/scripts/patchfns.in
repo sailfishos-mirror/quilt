@@ -1073,7 +1073,8 @@ patch_format()
 {
 	local prefix=${QUILT_PATCHES_PREFIX:+$SUBDIR_DOWN$QUILT_PATCHES/}
 
-	echo -n "${prefix//[%\\]/&&}%s"
+	prefix=${prefix//\\/\\\\}
+	echo -n "${prefix//%/%%}%s"
 }
 
 setup_colors()
