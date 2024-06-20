@@ -1074,7 +1074,8 @@ patch_format()
 	local prefix=${QUILT_PATCHES_PREFIX:+$SUBDIR_DOWN$QUILT_PATCHES/}
 
 	prefix=${prefix//\\/\\\\}
-	echo -n "${prefix//%/%%}%s"
+	# Escape to work around a bug in bash 3.1 and older
+	echo -n "${prefix//\%/%%}%s"
 }
 
 setup_colors()
