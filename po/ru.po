@@ -875,8 +875,8 @@ msgid "Introduction saved as %s\\n"
 msgstr "Введение сохранено как %s\\n"
 
 #: quilt/new.in:14
-msgid "Usage: quilt new [-p n|-p ab] {patchname}\\n"
-msgstr "Синтаксис: quilt new [-p n|-p ab] {имя-патча}\\n"
+msgid "Usage: quilt new [-p n] {patchname}\\n"
+msgstr "Синтаксис: quilt new [-p n] {имя-патча}\\n"
 
 #: quilt/new.in:17
 msgid ""
@@ -886,10 +886,6 @@ msgid ""
 "for grouping related patches together.\n"
 "\n"
 "-p n\tCreate a -p n style patch (-p0 or -p1 are supported).\n"
-"\n"
-"-p ab\tCreate a -p1 style patch, but use a/file and b/file as the\n"
-"\toriginal and new filenames instead of the default\n"
-"\tdir.orig/file and dir/file names.\n"
 "\n"
 "Quilt can be used in sub-directories of a source tree. It determines the\n"
 "root of a source tree by searching for a %s directory above the\n"
@@ -904,10 +900,6 @@ msgstr ""
 "\n"
 "-p n\tСоздать патч в стиле -p n (поддерживаются -p0 или -p1).\n"
 "\n"
-"-p ab\tСоздать патч в стиле -p1, но использовать a/file и b/file в качестве\n"
-"\tимён оригинального и нового файлов вместо имён\n"
-"\tdir.orig/file и dir/file.\n"
-"\n"
 "Quilt можно использовать в поддиректориях дерева исходных файлов. Программа "
 "определяет\n"
 "корень дерева путём поиска директории %s выше текущей директории.\n"
@@ -915,24 +907,23 @@ msgstr ""
 "если quilt выбирает в её качестве директорию слишком высоко в дереве\n"
 "исходных кодов.\n"
 
-#: quilt/new.in:68
-msgid ""
-"Cannot create patches with -p%s, please specify -p0, p1, or -pab instead\\n"
-msgstr "Не удалось создать патчи с -p%s, используйте -p0, -p1 или -pab\\n"
+#: quilt/new.in:64
+msgid "Cannot create patches with -p%s, please specify -p0 or -p1 instead\\n"
+msgstr "Не удалось создать патчи с -p%s, используйте -p0 или -p1\\n"
 
-#: quilt/new.in:89
+#: quilt/new.in:85
 msgid "QUILT_PATCHES(%s) must differ from QUILT_PC(%s)\\n"
 msgstr "QUILT_PATCHES(%s) должна отличаться от QUILT_PC(%s)\\n"
 
-#: quilt/new.in:97 quilt/refresh.in:182
+#: quilt/new.in:93 quilt/refresh.in:182
 msgid "Patch %s exists already\\n"
 msgstr "Патч %s уже существует\\n"
 
-#: quilt/new.in:108
+#: quilt/new.in:104
 msgid "Patch %s is now on top\\n"
 msgstr "Патч %s теперь наверху\\n"
 
-#: quilt/new.in:110 quilt/refresh.in:337
+#: quilt/new.in:106 quilt/refresh.in:337
 msgid "Failed to create patch %s\\n"
 msgstr "Не удалось создать патч %s\\n"
 
@@ -1496,15 +1487,15 @@ msgstr ""
 "отмените все патчи, используя версию quilt, которая использовалась для их "
 "наложения, прежде чем использовать эту версию.\\n"
 
-#: quilt/scripts/patchfns.in:1113
+#: quilt/scripts/patchfns.in:1115
 msgid "You have to install '%s' (from package %s) to use 'quilt %s'\\n"
 msgstr "Нужно установить «%s» (из пакета %s), чтобы использовать «quilt %s»\\n"
 
-#: quilt/scripts/patchfns.in:1192
+#: quilt/scripts/patchfns.in:1194
 msgid "Cannot change into parent directory %s/\\n"
 msgstr "Невозможно перейти в родительскую директорию %s/\\n"
 
-#: quilt/scripts/patchfns.in:1237
+#: quilt/scripts/patchfns.in:1239
 msgid ""
 "The working tree was created by an older version of quilt. Please run 'quilt "
 "upgrade'.\\n"
@@ -1512,7 +1503,7 @@ msgstr ""
 "Рабочее дерево было создано более старой версией quilt. Пожалуйста, "
 "выполните «quilt upgrade».\\n"
 
-#: quilt/scripts/patchfns.in:1245
+#: quilt/scripts/patchfns.in:1247
 msgid ""
 "The series file no longer matches the applied patches. Please run 'quilt pop "
 "-a'.\\n"
@@ -1520,7 +1511,7 @@ msgstr ""
 "Файл series больше не соответствует наложенным патчам. Пожалуйста, выполните "
 "«quilt pop -a».\\n"
 
-#: quilt/scripts/patchfns.in:1254
+#: quilt/scripts/patchfns.in:1256
 msgid "No series file found\\n"
 msgstr "Файл series не найден\\n"
 

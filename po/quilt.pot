@@ -579,7 +579,7 @@ msgid "Introduction saved as %s\\n"
 msgstr ""
 
 #: quilt/new.in:14
-msgid "Usage: quilt new [-p n|-p ab] {patchname}\\n"
+msgid "Usage: quilt new [-p n] {patchname}\\n"
 msgstr ""
 
 #: quilt/new.in:17
@@ -591,10 +591,6 @@ msgid ""
 "\n"
 "-p n\tCreate a -p n style patch (-p0 or -p1 are supported).\n"
 "\n"
-"-p ab\tCreate a -p1 style patch, but use a/file and b/file as the\n"
-"\toriginal and new filenames instead of the default\n"
-"\tdir.orig/file and dir/file names.\n"
-"\n"
 "Quilt can be used in sub-directories of a source tree. It determines the\n"
 "root of a source tree by searching for a %s directory above the\n"
 "current working directory. Create a %s directory in the intended root\n"
@@ -602,24 +598,23 @@ msgid ""
 "in the directory tree.\n"
 msgstr ""
 
-#: quilt/new.in:68
-msgid ""
-"Cannot create patches with -p%s, please specify -p0, p1, or -pab instead\\n"
+#: quilt/new.in:64
+msgid "Cannot create patches with -p%s, please specify -p0 or -p1 instead\\n"
 msgstr ""
 
-#: quilt/new.in:89
+#: quilt/new.in:85
 msgid "QUILT_PATCHES(%s) must differ from QUILT_PC(%s)\\n"
 msgstr ""
 
-#: quilt/new.in:97 quilt/refresh.in:182
+#: quilt/new.in:93 quilt/refresh.in:182
 msgid "Patch %s exists already\\n"
 msgstr ""
 
-#: quilt/new.in:108
+#: quilt/new.in:104
 msgid "Patch %s is now on top\\n"
 msgstr ""
 
-#: quilt/new.in:110 quilt/refresh.in:337
+#: quilt/new.in:106 quilt/refresh.in:337
 msgid "Failed to create patch %s\\n"
 msgstr ""
 
@@ -1031,27 +1026,27 @@ msgid ""
 "downgrading.\\n"
 msgstr ""
 
-#: quilt/scripts/patchfns.in:1113
+#: quilt/scripts/patchfns.in:1115
 msgid "You have to install '%s' (from package %s) to use 'quilt %s'\\n"
 msgstr ""
 
-#: quilt/scripts/patchfns.in:1192
+#: quilt/scripts/patchfns.in:1194
 msgid "Cannot change into parent directory %s/\\n"
 msgstr ""
 
-#: quilt/scripts/patchfns.in:1237
+#: quilt/scripts/patchfns.in:1239
 msgid ""
 "The working tree was created by an older version of quilt. Please run 'quilt "
 "upgrade'.\\n"
 msgstr ""
 
-#: quilt/scripts/patchfns.in:1245
+#: quilt/scripts/patchfns.in:1247
 msgid ""
 "The series file no longer matches the applied patches. Please run 'quilt pop "
 "-a'.\\n"
 msgstr ""
 
-#: quilt/scripts/patchfns.in:1254
+#: quilt/scripts/patchfns.in:1256
 msgid "No series file found\\n"
 msgstr ""
 

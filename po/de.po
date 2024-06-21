@@ -892,8 +892,8 @@ msgid "Introduction saved as %s\\n"
 msgstr "Einleitung gespeichert als %s\\n"
 
 #: quilt/new.in:14
-msgid "Usage: quilt new [-p n|-p ab] {patchname}\\n"
-msgstr "Aufruf: quilt new [-p n|-p ab] {patchname}\\n"
+msgid "Usage: quilt new [-p n] {patchname}\\n"
+msgstr "Aufruf: quilt new [-p n] {patchname}\\n"
 
 #: quilt/new.in:17
 msgid ""
@@ -903,10 +903,6 @@ msgid ""
 "for grouping related patches together.\n"
 "\n"
 "-p n\tCreate a -p n style patch (-p0 or -p1 are supported).\n"
-"\n"
-"-p ab\tCreate a -p1 style patch, but use a/file and b/file as the\n"
-"\toriginal and new filenames instead of the default\n"
-"\tdir.orig/file and dir/file names.\n"
 "\n"
 "Quilt can be used in sub-directories of a source tree. It determines the\n"
 "root of a source tree by searching for a %s directory above the\n"
@@ -923,10 +919,6 @@ msgstr ""
 "-p n\tErzeugen eines Patches der Art -p n (-p0 oder -p1 werden "
 "unterstützt).\n"
 "\n"
-"-p ab\tErzeugen eines Patches der Art -p1, jedoch a/datei und b/datei\n"
-"\tals ursprüngliche und neue Dateinamen verwenden anstelle von\n"
-"\tdir.orig/datei und dir/datei.\n"
-"\n"
 "Quilt kann aus Unterverzeichnissen eines Quellbaums heraus verwendet "
 "werden.\n"
 "Es bestimmt die Wurzel des Quellbaums, in dem es nach %s-Verzeichnissen\n"
@@ -934,26 +926,25 @@ msgstr ""
 "%s-Verzeichnis im vorgesehenen Wurzelverzeichnis, falls Quilt ein\n"
 "Verzeichnis zu weit oben im Verzeichnisbaum verwendet.\n"
 
-#: quilt/new.in:68
-msgid ""
-"Cannot create patches with -p%s, please specify -p0, p1, or -pab instead\\n"
+#: quilt/new.in:64
+msgid "Cannot create patches with -p%s, please specify -p0 or -p1 instead\\n"
 msgstr ""
-"Patches mit Level -p%s können nicht erzeugt werden, bitte stattdessen -p0, -"
-"p1 oder -pab angeben\\n"
+"Patches mit Level -p%s können nicht erzeugt werden, bitte stattdessen -p0 "
+"oder -p1 angeben\\n"
 
-#: quilt/new.in:89
+#: quilt/new.in:85
 msgid "QUILT_PATCHES(%s) must differ from QUILT_PC(%s)\\n"
 msgstr "QUILT_PATCHES(%s) muss sich von QUILT_PC(%s) unterscheiden\\n"
 
-#: quilt/new.in:97 quilt/refresh.in:182
+#: quilt/new.in:93 quilt/refresh.in:182
 msgid "Patch %s exists already\\n"
 msgstr "Patch %s existiert bereits\\n"
 
-#: quilt/new.in:108
+#: quilt/new.in:104
 msgid "Patch %s is now on top\\n"
 msgstr "Der oberste Patch ist jetzt %s\\n"
 
-#: quilt/new.in:110 quilt/refresh.in:337
+#: quilt/new.in:106 quilt/refresh.in:337
 msgid "Failed to create patch %s\\n"
 msgstr "Patch %s konnte nicht erzeugt werden\\n"
 
@@ -1534,17 +1525,17 @@ msgstr ""
 "der Version von quilt, die zur Erstellung des Arbeitsverzeichnisses "
 "verwendet wurde.\\n"
 
-#: quilt/scripts/patchfns.in:1113
+#: quilt/scripts/patchfns.in:1115
 msgid "You have to install '%s' (from package %s) to use 'quilt %s'\\n"
 msgstr ""
 "Sie müssen '%s' (aus dem Paket %s) installieren, um 'quilt %s' nutzen zu "
 "können\\n"
 
-#: quilt/scripts/patchfns.in:1192
+#: quilt/scripts/patchfns.in:1194
 msgid "Cannot change into parent directory %s/\\n"
 msgstr "Wechsel in übergeordnetes Verzeichnis %s/ nicht möglich\\n"
 
-#: quilt/scripts/patchfns.in:1237
+#: quilt/scripts/patchfns.in:1239
 msgid ""
 "The working tree was created by an older version of quilt. Please run 'quilt "
 "upgrade'.\\n"
@@ -1552,7 +1543,7 @@ msgstr ""
 "Das Arbeitsverzeichnis wurde von einer älteren quilt-Version erstellt. Bitte "
 "führen Sie \\`quilt upgrade' aus.\\n"
 
-#: quilt/scripts/patchfns.in:1245
+#: quilt/scripts/patchfns.in:1247
 msgid ""
 "The series file no longer matches the applied patches. Please run 'quilt pop "
 "-a'.\\n"
@@ -1560,7 +1551,7 @@ msgstr ""
 "Die series-Datei passt nicht mehr zu den angewandten Patches. Bitte führen "
 "Sie 'quilt pop -a' aus.\\n"
 
-#: quilt/scripts/patchfns.in:1254
+#: quilt/scripts/patchfns.in:1256
 msgid "No series file found\\n"
 msgstr "Keine series-Datei gefunden\\n"
 
