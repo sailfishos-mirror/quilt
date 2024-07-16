@@ -148,11 +148,13 @@ fi
 
 setup_pager
 
-scan_applied "$color_series_app" "$applied" \
-	$(patches_before $top)
-[ -n "$top" ] && \
+if [ -n "$top" ]
+then
+	scan_applied "$color_series_app" "$applied" \
+		$(applied_before $top)
 	scan_applied "$color_series_top" "$current" \
 		$top
+fi
 scan_unapplied "$color_series_una" "$unapplied" \
 	$(patches_after $top)
 ### Local Variables:
