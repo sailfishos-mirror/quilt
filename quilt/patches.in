@@ -69,12 +69,12 @@ scan_unapplied()
 	done
 
 	# "Or" all files in a single pattern
-	file=\\\($(array_join \\\| "${files_bre[@]}")\\\)
+	file=^\\\($(array_join \\\| "${files_bre[@]}")\\\)\$
 
 	for patch in "${patch_list[@]}"
 	do
 		if filenames_in_patch "$patch" \
-		   | grep -q "^$file\$"
+		   | grep -q "$file"
 		then
 			echo "$color$prefix$(print_patch $patch)$color_clear"
 		fi
