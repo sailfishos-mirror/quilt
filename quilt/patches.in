@@ -29,14 +29,17 @@ Note that this heuristic is much slower than scanning applied patches.)
 	fi
 }
 
-# Uses global variable opt_files
+# Uses global variables top and opt_files
 scan_applied()
 {
 	local color=$1 prefix=$2
-	shift 2
 	local patch file
+	local -a patch_list
 
-	for patch in "$@"
+	eval "patch_list=( $3 )"
+	set --
+
+	for patch in "${patch_list[@]}"
 	do
 		for file in "${opt_files[@]}"
 		do
@@ -49,13 +52,15 @@ scan_applied()
 	done
 }
 
-# Uses global variable opt_files
+# Uses global variables top and opt_files
 scan_unapplied()
 {
 	local color=$1 prefix=$2
-	shift 2
 	local patch file
-	local -a files_bre
+	local -a patch_list files_bre
+
+	eval "patch_list=( $3 )"
+	set --
 
 	# Quote each file name only once
 	for file in "${opt_files[@]}"
@@ -66,7 +71,7 @@ scan_unapplied()
 	# "Or" all files in a single pattern
 	file=\\\($(array_join \\\| "${files_bre[@]}")\\\)
 
-	for patch in "$@"
+	for patch in "${patch_list[@]}"
 	do
 		if filenames_in_patch "$patch" \
 		   | grep -q "^$file\$"
@@ -148,15 +153,19 @@ fi
 
 setup_pager
 
+# bash 4.4 and earlier perform poorly when a huge number of parameters
+# are passed to a function which in turn calls another function. We use
+# eval as a workaround, so the patch list is generated locally instead
+# of being passed as parameters.
 if [ -n "$top" ]
 then
 	scan_applied "$color_series_app" "$applied" \
-		$(applied_before $top)
+		'$(applied_before $top)'
 	scan_applied "$color_series_top" "$current" \
-		$top
+		'$top'
 fi
 scan_unapplied "$color_series_una" "$unapplied" \
-	$(patches_after $top)
+	'$(patches_after $top)'
 ### Local Variables:
 ### mode: shell-script
 ### End:
