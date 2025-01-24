@@ -256,7 +256,7 @@ fi
 if test -z "$diff_version" ; then
   AC_MSG_ERROR([
 $PACKAGE_NAME requires at least version 2.7 of GNU diffutils. You can
-download a current version of patch from ftp.gnu.org, or if you already
+download a current version of diffutils from ftp.gnu.org, or if you already
 have GNU diff then you can supply its path with the '--with-diff=' option.
 ])
 fi
