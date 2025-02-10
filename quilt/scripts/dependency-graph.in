@@ -112,7 +112,7 @@ SYNOPSIS: $basename [-h] [--patcher] [--short-edge=num] [--long-edge=num]
 	Check the ranges of lines that the patches modify for computing
 	dependencies. Include up to num lines of context.
 EOF
-    exit $help ? 0 : 1;
+    exit ($help ? 0 : 1);
 }
 
 my @nodes;

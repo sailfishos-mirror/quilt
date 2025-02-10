@@ -331,4 +331,4 @@ if (isatty(fileno(STDOUT))) {
 }
 print_footer "$status\n";
 flush_output;
-exit $failed ? 1 : 0;
+exit ($failed ? 1 : 0);
