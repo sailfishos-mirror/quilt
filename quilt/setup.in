@@ -241,6 +241,23 @@ inspect()
 	fi
 	export -f normalize_path dir_to_dir
 
+	# Apply filtering to the spec file if requested
+	if [ -n "$spec_filter" ]
+	then
+		# Make sure PATH isn't used
+		if [[ ! "$spec_filter" =~ / ]]
+		then
+			spec_filter="./$spec_filter"
+		fi
+		if [ -x "$spec_filter" ]
+		then
+			"$spec_filter" < "$specdir/$specfile" > "$tmpdir/$specfile"
+			specdir=$tmpdir
+		else
+			printf $"Warning: can't execute filter %s\n" "$spec_filter" >&2
+		fi
+	fi
+
 	# let rpm do all the dirty specfile stuff ...
 	echo -n "### rpmbuild: " >&4
 
@@ -278,6 +295,12 @@ Initializes a source tree from an rpm spec file or a quilt series file.
 --fuzz=N
 	Set the maximum fuzz factor (needs rpm 4.6 or later).
 
+--spec-filter FILTER
+	Before passing the spec file to rpmbuild for processing, apply a
+	filter to it. FILTER must be an executable script which reads the
+	original spec file from	stdin and writes the filtered spec file
+	to stdout.
+
 --slow	Use the original, slow method to process the spec file. In this mode,
 	rpmbuild generates a working tree in a temporary directory while all
 	its actions are recorded, and then everything is replayed from scratch
@@ -306,7 +329,7 @@ and lastly applying the patches.
 	fi
 }
 
-options=`getopt -o d:vh --long sourcedir:,fuzz:,slow,fast -- "$@"`
+options=`getopt -o d:vh --long sourcedir:,fuzz:,spec-filter:,slow,fast -- "$@"`
 
 if [ $? -ne 0 ]
 then
@@ -337,6 +360,9 @@ do
 	--fuzz)
 		# Only works with rpm 4.6 and later
 		DEFINE_FUZZ=( "--define" "_default_patch_fuzz $2" )
+		shift 2 ;;
+	--spec-filter)
+		spec_filter=$2
 		shift 2 ;;
 	--slow)
 		QUILT_SETUP_FAST=
