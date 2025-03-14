@@ -1,0 +1,7 @@
+#!/usr/bin/sh
+# Basic spec file filter for OBS packages
+# https://build.opensuse.org/
+
+sed -e '/^%.*@BUILD_FLAVOR@/s/@BUILD_FLAVOR@//' \
+    -e '/^%lua_provides/d' \
+    -e '/^Release:/s/[<>]//g'

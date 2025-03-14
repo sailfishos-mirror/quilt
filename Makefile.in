@@ -117,6 +117,9 @@ DIRT +=		po/*.mo po/*~
 
 SRC +=		$(wildcard test/*.test) test/run test/test.quiltrc
 
+SPEC_FILTERS :=	$(patsubst contrib/spec-filters/%,%,$(wildcard contrib/spec-filters/*))
+SRC +=		$(wildcard contrib/spec-filters/*)
+
 NON_EXEC_IN :=	doc/quilt.1 doc/README quilt/scripts/patchfns quilt/scripts/utilfns
 
 GIT_DESC :=	$(shell ./git-desc | sed -e 's:^v::')
@@ -357,7 +360,12 @@ ifneq ($(COMPAT_PROGRAMS),)
 endif
 endif
 
-install: install-main install-compat
+install-contrib:
+	$(INSTALL) -d $(BUILD_ROOT)$(datadir)/$(PACKAGE)/spec-filters
+	$(INSTALL) -m 755 $(SPEC_FILTERS:%=contrib/spec-filters/%)	\
+		   $(BUILD_ROOT)$(datadir)/$(PACKAGE)/spec-filters
+
+install: install-main install-compat install-contrib
 
 uninstall ::
 	rm -rf $(BIN:%=$(BUILD_ROOT)$(bindir)/%)			\

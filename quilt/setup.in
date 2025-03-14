@@ -244,10 +244,10 @@ inspect()
 	# Apply filtering to the spec file if requested
 	if [ -n "$spec_filter" ]
 	then
-		# Make sure PATH isn't used
+		# If only a file name, read from the shared directory
 		if [[ ! "$spec_filter" =~ / ]]
 		then
-			spec_filter="./$spec_filter"
+			spec_filter="$QUILT_DIR/spec-filters/$spec_filter"
 		fi
 		if [ -x "$spec_filter" ]
 		then
@@ -299,7 +299,9 @@ Initializes a source tree from an rpm spec file or a quilt series file.
 	Before passing the spec file to rpmbuild for processing, apply a
 	filter to it. FILTER must be an executable script which reads the
 	original spec file from	stdin and writes the filtered spec file
-	to stdout.
+	to stdout. FILTER can be specified as a path to a custom script,
+	or as a simple name, in which case it references one of the
+	filter scripts shipped with quilt.
 
 --slow	Use the original, slow method to process the spec file. In this mode,
 	rpmbuild generates a working tree in a temporary directory while all
