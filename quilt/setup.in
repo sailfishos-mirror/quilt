@@ -245,14 +245,14 @@ inspect()
 	echo -n "### rpmbuild: " >&4
 
 	PATH="$tmpdir/bin:$PATH" \
-	rpmbuild --eval "%define _sourcedir $abs_sourcedir" \
-		 --eval "%define _specdir   $specdir" \
-		 --eval "%define _builddir  $tmpdir/build" \
-		 --eval "%define __patch    $tmpdir/bin/patch" \
-		 --eval "%define __tar      $tmpdir/bin/tar" \
-		 --eval "%define __unzip    $tmpdir/bin/unzip" \
-		 --eval "%define __7zip     $tmpdir/bin/7z" \
-		 --eval "$DEFINE_FUZZ" \
+	rpmbuild --define "_sourcedir $abs_sourcedir" \
+		 --define "_specdir   $specdir" \
+		 --define "_builddir  $tmpdir/build" \
+		 --define "__patch    $tmpdir/bin/patch" \
+		 --define "__tar      $tmpdir/bin/tar" \
+		 --define "__unzip    $tmpdir/bin/unzip" \
+		 --define "__7zip     $tmpdir/bin/7z" \
+		 "${DEFINE_FUZZ[@]}" \
 		 --nodeps \
 		 -bp "$specdir/$specfile" < /dev/null >&5 2>&5
 	status=$?
@@ -318,6 +318,7 @@ eval set -- "$options"
 export QUILT_SETUP_FAST=1
 prefix=
 sourcedir=
+declare -a DEFINE_FUZZ
 
 while true
 do
@@ -335,7 +336,7 @@ do
 		shift 2 ;;
 	--fuzz)
 		# Only works with rpm 4.6 and later
-		DEFINE_FUZZ="%define _default_patch_fuzz $2"
+		DEFINE_FUZZ=( "--define" "_default_patch_fuzz $2" )
 		shift 2 ;;
 	--slow)
 		QUILT_SETUP_FAST=
