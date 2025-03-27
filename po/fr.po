@@ -1623,7 +1623,7 @@ msgstr "Le fichier %s existe\\n"
 
 #: quilt/setup.in:257
 msgid "Warning: can't execute filter %s\\n"
-msgstr ""
+msgstr "Attention: impossible d'exécuter le filtre %s\\n"
 
 #: quilt/setup.in:282
 msgid ""
@@ -1634,7 +1634,6 @@ msgstr ""
 "fuzz=N] [--slow|--fast] {fichier_spec|fichier_séries}\\n"
 
 #: quilt/setup.in:285
-#, fuzzy
 msgid ""
 "\n"
 "Initializes a source tree from an rpm spec file or a quilt series file.\n"
@@ -1693,6 +1692,15 @@ msgstr ""
 "\n"
 "--fuzz=N\n"
 "\tDéfinit le niveau maximum de flou (nécessite rpm 4.6 ou supérieur).\n"
+"\n"
+"--spec-filter FILTRE\n"
+"\tApplique un filtre au fichier de spécification avant de le passer\n"
+"\tà rpmbuild. FILTRE doit être un script exécutable qui lit le fichier\n"
+"\tde spécification d'origine depuis son entrée standard et écrit le\n"
+"\tfichier de spécification filtré sur sa sortie standard. FILTRE\n"
+"\tpeut être un chemin vers un script personnalisé, ou un simple nom,\n"
+"\tauquel cas il s'agit d'une référence à l'un des filtres fournis\n"
+"\tavec quilt.\n"
 "\n"
 "--slow\tUtilise la méthode originale, lente, pour traiter le fichier de\n"
 "\tspécification rpm. Dans ce mode, rpmbuild produit un arbre de\n"
