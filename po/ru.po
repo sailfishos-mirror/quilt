@@ -324,8 +324,8 @@ msgstr ""
 msgid ""
 "Cannot diff patches with -p%s, please specify -p0, -p1, or -pab instead\\n"
 msgstr ""
-"Невозможно сравнить патчи с -p%s, пожалуйста, используйте -p0, -p1 либо -pab"
-"\\n"
+"Невозможно сравнить патчи с -p%s, пожалуйста, используйте -p0, -p1 либо -"
+"pab\\n"
 
 #: quilt/diff.in:244
 msgid "No snapshot to diff against\\n"
@@ -1581,7 +1581,11 @@ msgstr "Директория %s существует\\n"
 msgid "File %s exists\\n"
 msgstr "Файл %s существует\\n"
 
-#: quilt/setup.in:265
+#: quilt/setup.in:257
+msgid "Warning: can't execute filter %s\\n"
+msgstr ""
+
+#: quilt/setup.in:282
 msgid ""
 "Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
 "slow|--fast] {specfile|seriesfile}\\n"
@@ -1589,7 +1593,7 @@ msgstr ""
 "Синтаксис: quilt setup [-d префикс-пути] [-v] [--sourcedir путь] [--fuzz=N] "
 "[--slow|--fast] {файл-spec|файл-series}\\n"
 
-#: quilt/setup.in:268
+#: quilt/setup.in:285
 #, fuzzy
 msgid ""
 "\n"
@@ -1604,6 +1608,14 @@ msgid ""
 "\n"
 "--fuzz=N\n"
 "\tSet the maximum fuzz factor (needs rpm 4.6 or later).\n"
+"\n"
+"--spec-filter FILTER\n"
+"\tBefore passing the spec file to rpmbuild for processing, apply a\n"
+"\tfilter to it. FILTER must be an executable script which reads the\n"
+"\toriginal spec file from\tstdin and writes the filtered spec file\n"
+"\tto stdout. FILTER can be specified as a path to a custom script,\n"
+"\tor as a simple name, in which case it references one of the\n"
+"\tfilter scripts shipped with quilt.\n"
 "\n"
 "--slow\tUse the original, slow method to process the spec file. In this "
 "mode,\n"
@@ -1662,24 +1674,24 @@ msgstr ""
 "должны\n"
 "идти раньше, иначе вы не сможете применить серию патчей.\n"
 
-#: quilt/setup.in:403
+#: quilt/setup.in:432
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
 msgstr ""
 "Секция %%prep файла %s содержит ошибки; результаты могут быть незавершены\\n"
 
-#: quilt/setup.in:406
+#: quilt/setup.in:435
 msgid "The -v option will show rpm's output\\n"
 msgstr "Опция -v покажет вывод rpm\\n"
 
-#: quilt/setup.in:467 quilt/setup.in:479 quilt/setup.in:490
+#: quilt/setup.in:496 quilt/setup.in:508 quilt/setup.in:519
 msgid "File %s not found\\n"
 msgstr "Файл %s не найден\\n"
 
-#: quilt/setup.in:470 quilt/setup.in:482 quilt/setup.in:493
+#: quilt/setup.in:499 quilt/setup.in:511 quilt/setup.in:522
 msgid "Unpacking archive %s\\n"
 msgstr "Распаковка архива %s\\n"
 
-#: quilt/setup.in:503
+#: quilt/setup.in:532
 msgid "Trying alternative patches and series names..."
 msgstr "Попытка использовать альтернативные имена для series и patches…"
 
@@ -1754,8 +1766,8 @@ msgstr ""
 
 #: quilt/upgrade.in:65
 msgid ""
-"The quilt meta-data in %s are already in the version %s format; nothing to do"
-"\\n"
+"The quilt meta-data in %s are already in the version %s format; nothing to "
+"do\\n"
 msgstr "Метаданные quilt в %s уже в формате версии %s; нечего делать\\n"
 
 #: quilt/upgrade.in:69

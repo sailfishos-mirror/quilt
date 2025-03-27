@@ -925,8 +925,8 @@ msgstr ""
 #: quilt/new.in:64
 msgid "Cannot create patches with -p%s, please specify -p0 or -p1 instead\\n"
 msgstr ""
-"Impossible de créer des patchs avec -p%s. Veuillez spécifier -p0 ou -p1 "
-"à la place.\\n"
+"Impossible de créer des patchs avec -p%s. Veuillez spécifier -p0 ou -p1 à la "
+"place.\\n"
 
 #: quilt/new.in:85
 msgid "QUILT_PATCHES(%s) must differ from QUILT_PC(%s)\\n"
@@ -1621,7 +1621,11 @@ msgstr "Le répertoire %s existe\\n"
 msgid "File %s exists\\n"
 msgstr "Le fichier %s existe\\n"
 
-#: quilt/setup.in:265
+#: quilt/setup.in:257
+msgid "Warning: can't execute filter %s\\n"
+msgstr ""
+
+#: quilt/setup.in:282
 msgid ""
 "Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
 "slow|--fast] {specfile|seriesfile}\\n"
@@ -1629,7 +1633,8 @@ msgstr ""
 "Usage : quilt setup [-d répertoire_source] [-v] [--sourcedir répertoire] [--"
 "fuzz=N] [--slow|--fast] {fichier_spec|fichier_séries}\\n"
 
-#: quilt/setup.in:268
+#: quilt/setup.in:285
+#, fuzzy
 msgid ""
 "\n"
 "Initializes a source tree from an rpm spec file or a quilt series file.\n"
@@ -1643,6 +1648,14 @@ msgid ""
 "\n"
 "--fuzz=N\n"
 "\tSet the maximum fuzz factor (needs rpm 4.6 or later).\n"
+"\n"
+"--spec-filter FILTER\n"
+"\tBefore passing the spec file to rpmbuild for processing, apply a\n"
+"\tfilter to it. FILTER must be an executable script which reads the\n"
+"\toriginal spec file from\tstdin and writes the filtered spec file\n"
+"\tto stdout. FILTER can be specified as a path to a custom script,\n"
+"\tor as a simple name, in which case it references one of the\n"
+"\tfilter scripts shipped with quilt.\n"
 "\n"
 "--slow\tUse the original, slow method to process the spec file. In this "
 "mode,\n"
@@ -1707,24 +1720,24 @@ msgstr ""
 "l'archive, puis appliquer la substitution de chaîne, et enfin appliquer\n"
 "les patches.\n"
 
-#: quilt/setup.in:403
+#: quilt/setup.in:432
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
 msgstr ""
 "La section %%prep de %s a échoué ; les résultats sont peut-être incomplets\\n"
 
-#: quilt/setup.in:406
+#: quilt/setup.in:435
 msgid "The -v option will show rpm's output\\n"
 msgstr "L'option -v montre les affichages de rpm\\\\n"
 
-#: quilt/setup.in:467 quilt/setup.in:479 quilt/setup.in:490
+#: quilt/setup.in:496 quilt/setup.in:508 quilt/setup.in:519
 msgid "File %s not found\\n"
 msgstr "Le fichier %s est introuvable\\n"
 
-#: quilt/setup.in:470 quilt/setup.in:482 quilt/setup.in:493
+#: quilt/setup.in:499 quilt/setup.in:511 quilt/setup.in:522
 msgid "Unpacking archive %s\\n"
 msgstr "Désarchivage de %s\\n"
 
-#: quilt/setup.in:503
+#: quilt/setup.in:532
 msgid "Trying alternative patches and series names..."
 msgstr "Tentative d'utilisation des noms de patches et séries alternatifs..."
 
@@ -1804,8 +1817,8 @@ msgstr ""
 
 #: quilt/upgrade.in:65
 msgid ""
-"The quilt meta-data in %s are already in the version %s format; nothing to do"
-"\\n"
+"The quilt meta-data in %s are already in the version %s format; nothing to "
+"do\\n"
 msgstr ""
 "Les méta-données de quilt dans %s sont déjà au format %s ; rien à faire\\n"
 

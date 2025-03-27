@@ -1621,7 +1621,11 @@ msgstr "Verzeichnis %s existiert\\n"
 msgid "File %s exists\\n"
 msgstr "Datei %s existiert\\n"
 
-#: quilt/setup.in:265
+#: quilt/setup.in:257
+msgid "Warning: can't execute filter %s\\n"
+msgstr ""
+
+#: quilt/setup.in:282
 msgid ""
 "Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
 "slow|--fast] {specfile|seriesfile}\\n"
@@ -1629,7 +1633,8 @@ msgstr ""
 "Aufruf: quilt setup [-d pfad-präfix] [-v] [--sourcedir verzeichnis] [--"
 "fuzz=N] [--slow|--fast] {spec-datei|series-datei}\\n"
 
-#: quilt/setup.in:268
+#: quilt/setup.in:285
+#, fuzzy
 msgid ""
 "\n"
 "Initializes a source tree from an rpm spec file or a quilt series file.\n"
@@ -1643,6 +1648,14 @@ msgid ""
 "\n"
 "--fuzz=N\n"
 "\tSet the maximum fuzz factor (needs rpm 4.6 or later).\n"
+"\n"
+"--spec-filter FILTER\n"
+"\tBefore passing the spec file to rpmbuild for processing, apply a\n"
+"\tfilter to it. FILTER must be an executable script which reads the\n"
+"\toriginal spec file from\tstdin and writes the filtered spec file\n"
+"\tto stdout. FILTER can be specified as a path to a custom script,\n"
+"\tor as a simple name, in which case it references one of the\n"
+"\tfilter scripts shipped with quilt.\n"
 "\n"
 "--slow\tUse the original, slow method to process the spec file. In this "
 "mode,\n"
@@ -1709,25 +1722,25 @@ msgstr ""
 "Zeichenkettensubstitution durchführen und als letztes die Patches\n"
 "anwenden.\n"
 
-#: quilt/setup.in:403
+#: quilt/setup.in:432
 msgid "The %%prep section of %s failed; results may be incomplete\\n"
 msgstr ""
 "Der %%prep-Abschnitt von %s ist fehlgeschlagen; die Ergebnisse sind "
 "möglicherweise unvollständig.\\n"
 
-#: quilt/setup.in:406
+#: quilt/setup.in:435
 msgid "The -v option will show rpm's output\\n"
 msgstr "Die Option -v zeigt die Ausgaben von rpm an\\n"
 
-#: quilt/setup.in:467 quilt/setup.in:479 quilt/setup.in:490
+#: quilt/setup.in:496 quilt/setup.in:508 quilt/setup.in:519
 msgid "File %s not found\\n"
 msgstr "Datei %s nicht gefunden\\n"
 
-#: quilt/setup.in:470 quilt/setup.in:482 quilt/setup.in:493
+#: quilt/setup.in:499 quilt/setup.in:511 quilt/setup.in:522
 msgid "Unpacking archive %s\\n"
 msgstr "Entpacken des Archivs %s\\n"
 
-#: quilt/setup.in:503
+#: quilt/setup.in:532
 msgid "Trying alternative patches and series names..."
 msgstr "Versuch alternativer patches- und series-Namen ..."
 
@@ -1804,8 +1817,8 @@ msgstr ""
 
 #: quilt/upgrade.in:65
 msgid ""
-"The quilt meta-data in %s are already in the version %s format; nothing to do"
-"\\n"
+"The quilt meta-data in %s are already in the version %s format; nothing to "
+"do\\n"
 msgstr ""
 "Die Metadaten in %s haben bereits das Format Version %s; keine "
 "Aktualisierung nötig\\n"
