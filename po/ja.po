@@ -1573,7 +1573,7 @@ msgstr "ファイル %s は、すでに存在します\\n"
 
 #: quilt/setup.in:257
 msgid "Warning: can't execute filter %s\\n"
-msgstr ""
+msgstr "警告: フィルター %s を実行できません\\n"
 
 #: quilt/setup.in:282
 msgid ""
