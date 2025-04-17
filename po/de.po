@@ -7,8 +7,8 @@
 # Holger Wansing <linux@wansing-online.de>, 2015, 2016.
 msgid ""
 msgstr ""
-"Project-Id-Version: quilt 0.64\n"
-"PO-Revision-Date: 2016-11-07 12:11+0200\n"
+"Project-Id-Version: quilt 0.69\n"
+"PO-Revision-Date: 2025-04-17 18:30+0200\n"
 "Last-Translator: Holger Wansing <linux@wansing-online.de>\n"
 "Language-Team: German <debian-l10n-german@lists.debian.org>\n"
 "Language: de\n"
@@ -1623,7 +1623,7 @@ msgstr "Datei %s existiert\\n"
 
 #: quilt/setup.in:257
 msgid "Warning: can't execute filter %s\\n"
-msgstr ""
+msgstr "Warnung: kann Filter nicht %s ausführen\\n"
 
 #: quilt/setup.in:282
 msgid ""
@@ -1634,7 +1634,6 @@ msgstr ""
 "fuzz=N] [--slow|--fast] {spec-datei|series-datei}\\n"
 
 #: quilt/setup.in:285
-#, fuzzy
 msgid ""
 "\n"
 "Initializes a source tree from an rpm spec file or a quilt series file.\n"
@@ -1694,6 +1693,15 @@ msgstr ""
 "--fuzz=N\n"
 "\tDen maximalen Unscharf-Faktor (fuzz) setzen (benötigt rpm 4.6 oder \n"
 "\tspäter).\n"
+"\n"
+"--spec-filter FILTER\n"
+"\tEinen Filter auf die spec-Datei anwenden, bevor sie zur Verarbeitung\n"
+"\tan rpmbuild übergeben wird. FILTER muss ein ausführbares Skript sein,\n"
+"\twelches die ursprüngliche spec-Datei von der Standardeingabe liest\n"
+"\tund die gefilterte spec-Datei zur Standardausgabe schreibt. FILTER\n"
+"\tkann als Pfad zu einem benutzerdefinierten Skript, oder als einfacher\n"
+"\tName angegeben werden. In diesem Fall verweist es auf eines der in\n"
+"\tquilt mitgelieferten Filterskripte.\n"
 "\n"
 "--slow\tDie unrsprüngliche, langsame Methode zur Verarbeitung der spec-"
 "Datei\n"
