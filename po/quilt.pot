@@ -1115,7 +1115,7 @@ msgstr ""
 #: quilt/setup.in:282
 msgid ""
 "Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
-"slow|--fast] {specfile|seriesfile}\\n"
+"spec-filter FILTER] [--slow|--fast] {specfile|seriesfile}\\n"
 msgstr ""
 
 #: quilt/setup.in:285

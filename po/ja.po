@@ -1578,10 +1578,10 @@ msgstr "警告: フィルター %s を実行できません\\n"
 #: quilt/setup.in:282
 msgid ""
 "Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
-"slow|--fast] {specfile|seriesfile}\\n"
+"spec-filter FILTER] [--slow|--fast] {specfile|seriesfile}\\n"
 msgstr ""
 "使い方: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
-"slow|--fast] {specfile|seriesfile}\\n"
+"spec-filter FILTER] [--slow|--fast] {specfile|seriesfile}\\n"
 
 #: quilt/setup.in:285
 msgid ""

@@ -1586,9 +1586,10 @@ msgid "Warning: can't execute filter %s\\n"
 msgstr ""
 
 #: quilt/setup.in:282
+#, fuzzy
 msgid ""
 "Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
-"slow|--fast] {specfile|seriesfile}\\n"
+"spec-filter FILTER] [--slow|--fast] {specfile|seriesfile}\\n"
 msgstr ""
 "Синтаксис: quilt setup [-d префикс-пути] [-v] [--sourcedir путь] [--fuzz=N] "
 "[--slow|--fast] {файл-spec|файл-series}\\n"

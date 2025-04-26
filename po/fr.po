@@ -1628,10 +1628,10 @@ msgstr "Attention: impossible d'exécuter le filtre %s\\n"
 #: quilt/setup.in:282
 msgid ""
 "Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
-"slow|--fast] {specfile|seriesfile}\\n"
+"spec-filter FILTER] [--slow|--fast] {specfile|seriesfile}\\n"
 msgstr ""
 "Usage : quilt setup [-d répertoire_source] [-v] [--sourcedir répertoire] [--"
-"fuzz=N] [--slow|--fast] {fichier_spec|fichier_séries}\\n"
+"fuzz=N] [--spec-filter FILTRE] [--slow|--fast] {fichier_spec|fichier_séries}\\n"
 
 #: quilt/setup.in:285
 msgid ""

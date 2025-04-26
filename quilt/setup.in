@@ -279,7 +279,7 @@ inspect()
 
 usage()
 {
-	printf $"Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--slow|--fast] {specfile|seriesfile}\n"
+	printf $"Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--spec-filter FILTER] [--slow|--fast] {specfile|seriesfile}\n"
 	if [ x$1 = x-h ]
 	then
 		printf $"

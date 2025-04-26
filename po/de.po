@@ -1628,10 +1628,10 @@ msgstr "Warnung: kann Filter nicht %s ausführen\\n"
 #: quilt/setup.in:282
 msgid ""
 "Usage: quilt setup [-d path-prefix] [-v] [--sourcedir dir] [--fuzz=N] [--"
-"slow|--fast] {specfile|seriesfile}\\n"
+"spec-filter FILTER] [--slow|--fast] {specfile|seriesfile}\\n"
 msgstr ""
 "Aufruf: quilt setup [-d pfad-präfix] [-v] [--sourcedir verzeichnis] [--"
-"fuzz=N] [--slow|--fast] {spec-datei|series-datei}\\n"
+"fuzz=N] [--spec-filter FILTER] [--slow|--fast] {spec-datei|series-datei}\\n"
 
 #: quilt/setup.in:285
 msgid ""
