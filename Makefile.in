@@ -161,9 +161,11 @@ scripts : $(BIN:%=bin/%) $(QUILT:%=quilt/%)				\
 
 dist : clean $(PACKAGE)-$(VERSION).tar.gz
 
+# scp option -O needed since openssh version 9 defaults to the SFTP
+# protocol while the Savannah server only supports SCP (as of April 2025)
 publish : dist
 	gpg --detach-sign --use-agent $(PACKAGE)-$(VERSION).tar.gz
-	scp $(PACKAGE)-$(VERSION).tar.gz{,.sig} \
+	scp -O $(PACKAGE)-$(VERSION).tar.gz{,.sig} \
 		dl.sv.nongnu.org:/releases/quilt/
 
 snapshot : $(PACKAGE)-$(GIT_DESC).tar.bz2
