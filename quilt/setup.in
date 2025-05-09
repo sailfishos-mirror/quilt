@@ -270,6 +270,7 @@ inspect()
 		 --define "__unzip    $tmpdir/bin/unzip" \
 		 --define "__7zip     $tmpdir/bin/7z" \
 		 "${DEFINE_FUZZ[@]}" \
+		 "${FORCE_ARCH[@]}" \
 		 --nodeps \
 		 -bp "$specdir/$specfile" < /dev/null >&5 2>&5
 	status=$?
@@ -343,7 +344,36 @@ eval set -- "$options"
 export QUILT_SETUP_FAST=1
 prefix=
 sourcedir=
-declare -a DEFINE_FUZZ
+declare -a DEFINE_FUZZ FORCE_ARCH
+
+# Sets FORCE_ARCH if needed
+check_exclusivearch()
+{
+	local spec_file=$1 our_arch a
+	local -a archs
+
+	archs=( $(sed -ne 's/^ExclusiveArch:[[:space:]]*\(.*\)$/\1/p' "$spec_file") )
+	if [ ${#archs[@]} -eq 0 ]
+	then
+		return
+	fi
+
+	# ExclusiveArch statement is present
+	our_arch=$(arch 2>/dev/null)
+	for a in "${archs[@]}"
+	do
+		if [ "$a" == "$our_arch" ]
+		then
+			# We are in the list, so no problem
+			return
+		fi
+	done
+
+	# We are not in the exclusive arch list. Force the target to the
+	# first listed architecture to make rpmbuild happy.
+
+	FORCE_ARCH=( "--target" "${archs[0]}" )
+}
 
 while true
 do
@@ -416,6 +446,9 @@ case "$1" in
 
 	# check if rpmbuild is installed before running inspect
 	check_external_tool rpmbuild rpm-build
+
+	# check if ExclusiveArch statement would block rpmbuild
+	check_exclusivearch "$spec_file"
 
 	if [ -n "$QUILT_SETUP_FAST" ]
 	then
